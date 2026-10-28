@@ -35,6 +35,7 @@ test('validation rejects malformed files, duplicate ids and impossible dates', (
     language: 'zh',
     opacity: 1,
     alwaysOnTop: false,
+    autoStart: false,
   });
   assert.equal(cleanSettings({ opacity: 0 }).opacity, 0.35);
 });

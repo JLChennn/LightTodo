@@ -174,115 +174,12 @@ svg {
   padding: 0 24px;
   scrollbar-gutter: stable;
 }
-.hero {
-  position: relative;
-  padding: 27px 0 23px;
-  isolation: isolate;
-  overflow: hidden;
-}
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  color: #8c958b;
-  letter-spacing: 0.35px;
-}
-.eyebrow svg {
-  color: #c2a878;
-}
-h1 {
-  font-size: 25px;
-  letter-spacing: -1px;
-  font-weight: 650;
-  line-height: 1.35;
-  margin: 11px 0 8px;
-  color: #35463d;
-}
-.hero p {
-  font-size: 11px;
-  letter-spacing: 0.4px;
-  color: #969b92;
-  margin: 0;
-}
-.hero-orb {
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-  border-radius: 50%;
-}
-.orb-one {
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(circle, #e7ecdca0, #f3f4eb00 70%);
-  top: 4px;
-  right: -8px;
-}
-.orb-two {
-  width: 85px;
-  height: 85px;
-  background: radial-gradient(circle, #efe2d28c, #f5eee400 70%);
-  right: 33px;
-  bottom: -13px;
-}
-.hero-spark {
-  position: absolute;
-  right: 21px;
-  top: 50px;
-  color: #b6c6ac;
-  transform: rotate(-13deg);
-}
-.progress-card {
-  padding: 15px 16px 12px;
-  background: #f0f3eb;
-  border: 1px solid #e9ede2;
-  border-radius: 13px;
-}
-.progress-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 10px;
-  color: #7a8c74;
-  letter-spacing: 0.3px;
-}
-.progress-top strong {
-  font-size: 17px;
-  font-weight: 600;
-  color: #5b775d;
-  letter-spacing: -0.4px;
-}
-.progress-top small {
-  font-size: 11px;
-  color: #a0ac97;
-  font-weight: 400;
-}
-.progress-track {
-  height: 4px;
-  background: #e0e6d8;
-  border-radius: 10px;
-  margin: 11px 0 9px;
-  overflow: hidden;
-}
-.progress-track > div {
-  height: 100%;
-  border-radius: 10px;
-  background: #a1b99a;
-  transition: width 0.35s;
-}
-.progress-bottom {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  color: #9aa58f;
-  font-size: 9px;
-}
 .list-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin: 23px 0 19px;
+  margin: 10px 0 15px;
 }
 .search {
   display: flex;
@@ -349,10 +246,10 @@ h1 {
   display: flex;
   position: relative;
   align-items: flex-start;
-  gap: 11px;
+  gap: 8px;
   border-radius: 11px;
   margin-bottom: 8px;
-  padding: 13px 12px;
+  padding: 10px 9px;
   min-height: 76px;
   border: 1px solid #00000002;
   transition: background 0.2s;
@@ -427,15 +324,15 @@ h1 {
   opacity: 0.85;
 }
 .task-actions {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 21px);
   gap: 1px;
   opacity: 0;
   transition: opacity 0.15s;
 }
 .task-actions .icon-button {
   height: 21px;
-  width: 23px;
+  width: 21px;
   color: var(--ink);
 }
 .task:hover .task-actions,
@@ -461,45 +358,9 @@ h1 {
 .completed-group {
   margin-top: 24px;
 }
-.overdue-group .section-heading {
-  color: #bb9a7c;
-}
-.overdue-group .count {
-  border-color: #eee1d6;
-}
 .empty-state {
   padding: 26px 10px 18px;
   text-align: center;
-}
-.empty-art {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 78px;
-  height: 78px;
-  background: #edf1e8;
-  border-radius: 28px;
-  margin: 0 auto 20px;
-  color: #a7b79b;
-  transform: rotate(-6deg);
-}
-.empty-art span {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  background: #f1e4d3;
-  border-radius: 50%;
-  top: -5px;
-  right: -7px;
-}
-.empty-art i {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: #ded9ec;
-  border-radius: 50%;
-  bottom: 5px;
-  left: -12px;
 }
 .empty-state h2 {
   font-size: 14px;
@@ -522,16 +383,6 @@ h1 {
 }
 .text-button:hover {
   color: #456c4d;
-}
-.gentle-note {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  color: #b0b7a6;
-  font-size: 9px;
-  letter-spacing: 0.7px;
-  margin: 24px 0 22px;
 }
 .statusbar {
   flex-shrink: 0;
@@ -561,11 +412,6 @@ h1 {
 }
 .save-status.failed > span {
   background: #bb7968;
-}
-.local-label {
-  font-size: 8px;
-  letter-spacing: 1.5px;
-  color: #bcc2b4;
 }
 .resize-hint {
   position: absolute;
@@ -795,8 +641,7 @@ h1 {
   color: #78866f;
   font-size: 12px;
 }
-.path-box,
-.welcome-path {
+.path-box {
   font-size: 10px;
   line-height: 1.6;
   color: #a0ab92;
@@ -835,56 +680,6 @@ h1 {
 .settings-footer span {
   margin-left: auto;
   white-space: nowrap;
-}
-.welcome-card {
-  position: absolute;
-  left: 24px;
-  right: 24px;
-  bottom: 49px;
-  background: #fffefb;
-  box-shadow: 0 8px 40px #4a5b4225;
-  border: 1px solid #e4e9da;
-  border-radius: 15px;
-  padding: 20px;
-  z-index: 3;
-}
-.welcome-close {
-  position: absolute;
-  right: 8px;
-  top: 8px;
-}
-.welcome-icon {
-  display: grid;
-  place-items: center;
-  width: 35px;
-  height: 35px;
-  background: #edf2e7;
-  color: #8ca07b;
-  border-radius: 11px;
-}
-.welcome-card h2 {
-  font-size: 15px;
-  font-weight: 550;
-  margin: 15px 0 10px;
-  letter-spacing: -0.4px;
-}
-.welcome-card p {
-  font-size: 11px;
-  line-height: 1.9;
-  color: #9ca58f;
-}
-.welcome-path {
-  font-size: 9px;
-}
-.welcome-buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 9px;
-  margin-top: 15px;
-}
-.welcome-buttons button {
-  font-size: 10px;
-  padding: 9px 12px;
 }
 .toast {
   position: fixed;
@@ -949,15 +744,6 @@ h1 {
     margin-left: max(30px, calc((100vw - 650px) / 2));
     margin-right: max(30px, calc((100vw - 650px) / 2));
   }
-  .welcome-card {
-    left: 50%;
-    right: auto;
-    width: 390px;
-    transform: translateX(-50%);
-  }
-  .hero h1 {
-    font-size: 30px;
-  }
   .task {
     padding: 15px 16px;
   }
@@ -979,19 +765,11 @@ h1 {
   .brand {
     font-size: 13px;
   }
-  .hero h1 {
-    font-size: 23px;
-  }
   .modal {
     padding: 18px;
   }
   .settings-footer {
     font-size: 8px;
-  }
-  .welcome-card {
-    left: 18px;
-    right: 18px;
-    padding: 17px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1001,4 +779,32 @@ h1 {
     animation: none !important;
     transition: none !important;
   }
+}
+.list-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0 3px;
+  font-size: 10px;
+  color: #939c8d;
+}
+.drag-handle {
+  cursor: grab;
+  color: #9cae99;
+  opacity: 0.6;
+  padding: 2px 0;
+  align-self: center;
+  display: flex;
+  width: 12px;
+  flex-shrink: 0;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+.task.drop-target {
+  outline: 2px solid #89a58e;
+  outline-offset: 2px;
+}
+.task-date.overdue-date {
+  color: #b18a64;
 }

@@ -18,7 +18,11 @@ const fs = require('node:fs/promises');
       version: app.getVersion(),
       windowTitle: BrowserWindow.getAllWindows()[0].getTitle(),
     }));
-    if (!runtime.packaged || runtime.version !== '1.0.0' || state.data.version !== 1)
+    if (
+      !runtime.packaged ||
+      runtime.version !== require('../package.json').version ||
+      state.data.version !== 1
+    )
       throw new Error('Invalid installed application');
     await fs.mkdir('test-results', { recursive: true });
     await page.screenshot({ path: 'test-results/installed.png' });

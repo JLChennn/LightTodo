@@ -3,6 +3,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { atomicWrite, loadData, readData, validateData, cleanSettings } = require('./store.cjs');
+const { createStartup } = require('./startup.cjs');
 
 if (!app.isPackaged && process.env.LIGHTTODO_TEST_HOME)
   app.setPath('userData', path.resolve(process.env.LIGHTTODO_TEST_HOME));
@@ -13,9 +14,9 @@ let win,
   data,
   recovered = false,
   closing = false,
-  boundsTimer,
   unsaved = false;
 let queue = Promise.resolve();
+let startup;
 const configFile = () => path.join(app.getPath('userData'), 'settings.json');
 const dataFile = () => path.join(config.dataDir, 'lighttodo.json');
 const entry = path.join(__dirname, '../dist/index.html');
@@ -32,7 +33,8 @@ function applySettings() {
   win.setAlwaysOnTop(config.alwaysOnTop);
   win.setOpacity(config.opacity);
 }
-function snapshot() {
+async function snapshot() {
+  config.autoStart = await startup.get();
   return {
     data,
     settings: cleanSettings(config),
@@ -40,6 +42,7 @@ function snapshot() {
     recovered,
     platform: process.platform,
     version: app.getVersion(),
+    startupSupported: startup.supported,
   };
 }
 function handle(channel, fn) {
@@ -68,10 +71,13 @@ function register() {
     const previous = { ...config };
     config = { ...config, ...cleanSettings(input) };
     try {
+      if (config.autoStart !== previous.autoStart) await startup.set(config.autoStart);
       await saveConfig();
       applySettings();
     } catch (e) {
       config = previous;
+      if (startup.supported && (await startup.get()) !== previous.autoStart)
+        await startup.set(previous.autoStart);
       applySettings();
       throw e;
     }
@@ -172,28 +178,14 @@ function register() {
   });
 }
 async function createWindow() {
-  let b = config.bounds;
-  if (
-    b &&
-    (!Number.isFinite(b.x) ||
-      !Number.isFinite(b.y) ||
-      !screen
-        .getAllDisplays()
-        .some(
-          (d) =>
-            b.x + Math.min(b.width, 100) > d.workArea.x &&
-            b.x < d.workArea.x + d.workArea.width &&
-            b.y + 40 > d.workArea.y &&
-            b.y < d.workArea.y + d.workArea.height,
-        ))
-  )
-    b = undefined;
+  const area = screen.getPrimaryDisplay().workArea;
   win = new BrowserWindow({
-    width: 440,
-    height: 700,
+    width: 360,
+    height: 460,
+    x: area.x + 16,
+    y: area.y + 16,
     minWidth: 360,
     minHeight: 460,
-    ...b,
     show: false,
     frame: false,
     resizable: true,
@@ -217,25 +209,9 @@ async function createWindow() {
   win.webContents.on('will-navigate', (e) => e.preventDefault());
   win.webContents.session.setPermissionRequestHandler((_w, _p, cb) => cb(false));
   applySettings();
-  const remember = () => {
-    clearTimeout(boundsTimer);
-    boundsTimer = setTimeout(
-      () =>
-        run(async () => {
-          if (!win.isDestroyed() && !win.isMinimized() && !win.isMaximized()) {
-            config.bounds = win.getBounds();
-            await saveConfig();
-          }
-        }).catch((e) => console.error('Window settings:', e.message)),
-      300,
-    );
-  };
-  win.on('resize', remember);
-  win.on('move', remember);
   win.on('close', (e) => {
     if (closing) return;
     e.preventDefault();
-    clearTimeout(boundsTimer);
     run(async () => {
       if (unsaved) {
         const answer = await dialog.showMessageBox(win, {
@@ -251,7 +227,6 @@ async function createWindow() {
         });
         if (answer.response !== 1) return false;
       }
-      config.bounds = win.getNormalBounds();
       await saveConfig();
       return true;
     })
@@ -292,8 +267,10 @@ if (single) {
           typeof saved.dataDir === 'string'
             ? saved.dataDir
             : path.join(app.getPath('userData'), 'data'),
-        bounds: saved.bounds,
       };
+      if (process.platform === 'win32') app.setAppUserModelId('io.github.jlchennn.lighttodo');
+      startup = createStartup({ app, homeDir: app.getPath('home') });
+      config.autoStart = await startup.get();
       const loaded = await loadData(dataFile(), !saved.dataDir);
       data = loaded.data;
       recovered = loaded.recovered;

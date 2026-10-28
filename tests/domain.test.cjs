@@ -42,3 +42,38 @@ test('search matches titles/notes case-insensitively and stays within period', a
   assert.equal(selectTodos(rows, 'month', '备注', new Date(2026, 9, 28)).length, 1);
   assert.equal(selectTodos(rows, 'month', 'missing', new Date(2026, 9, 28)).length, 0);
 });
+test('manual order survives filters and complete/undo; hidden slots are unchanged', async () => {
+  const { selectTodos, reorderTodos } = await domain;
+  const rows = [
+    todo('a', '2026-10-28'),
+    todo('hidden', '2026-11-01'),
+    todo('b', '2026-10-27'),
+    todo('c', '2026-10-28'),
+    todo('done', '2026-10-28', true),
+  ];
+  const next = reorderTodos(rows, ['a', 'b', 'c', 'done'], 'c', 'a');
+  assert.deepEqual(
+    next.map((t) => t.id),
+    ['c', 'hidden', 'a', 'b', 'done'],
+  );
+  assert.deepEqual(
+    selectTodos(next, 'today', '', new Date(2026, 9, 28)).map((t) => t.id),
+    ['c', 'a', 'b', 'done'],
+  );
+  assert.equal(reorderTodos(next, ['a', 'done'], 'a', 'done'), next);
+  assert.equal(reorderTodos(next, ['a', 'b'], 'c', 'a'), next);
+  const complete = next.map((t) => (t.id === 'c' ? { ...t, done: true } : t));
+  assert.deepEqual(
+    selectTodos(complete, 'today', '', new Date(2026, 9, 28)).map((t) => t.id),
+    ['a', 'b', 'c', 'done'],
+  );
+  assert.deepEqual(
+    selectTodos(
+      complete.map((t) => (t.id === 'c' ? { ...t, done: false } : t)),
+      'today',
+      '',
+      new Date(2026, 9, 28),
+    ).map((t) => t.id),
+    ['c', 'a', 'b', 'done'],
+  );
+});

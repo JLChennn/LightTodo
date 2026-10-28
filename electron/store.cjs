@@ -104,6 +104,7 @@ function cleanSettings(input = {}) {
   return {
     language: input.language === 'en' ? 'en' : 'zh',
     alwaysOnTop: input.alwaysOnTop === true,
+    autoStart: input.autoStart === true,
     opacity:
       typeof input.opacity === 'number' && Number.isFinite(input.opacity)
         ? Math.max(0.35, Math.min(1, input.opacity))

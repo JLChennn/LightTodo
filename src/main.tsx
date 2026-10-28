@@ -12,16 +12,16 @@ import {
   FolderOpen,
   Download,
   Upload,
-  ChevronRight,
   Pencil,
   Trash2,
   CalendarDays,
   Leaf,
-  CheckCheck,
-  Sun,
-  Sparkles,
+  GripVertical,
+  ChevronUp,
+  ChevronDown,
+  Power,
 } from 'lucide-react';
-import { dateKey, selectTodos } from './domain';
+import { dateKey, selectTodos, reorderTodos } from './domain';
 import type { Color, Period, Settings, Snapshot, Todo } from './domain';
 import './styles.css';
 
@@ -31,13 +31,6 @@ const copy = {
     week: '本周',
     month: '本月',
     year: '今年',
-    title: {
-      today: '今天，慢慢来。',
-      week: '这一周，有条不紊。',
-      month: '这个月，稳步向前。',
-      year: '这一年，心有所向。',
-    },
-    subtitle: '留一点空间，给重要的小事。',
     add: '添加待办',
     search: '搜索当前清单…',
     settings: '偏好设置',
@@ -49,15 +42,12 @@ const copy = {
     pending: '待完成',
     completed: '已完成',
     overdue: '之前未完成',
-    empty: '清单很轻，心也很轻。',
-    emptySub: '添加一件小事，从这里开始。',
+    empty: '暂无待办',
     noResults: '没有找到相关待办',
     noResultsSub: '试试其他关键词，或切换时间范围。',
-    progress: '今日份的小小进步',
-    footer: '一步一步，也是在向前。',
-    newTask: '记下一件小事',
+    newTask: '新增待办',
     editTask: '编辑待办',
-    taskTitle: '想做些什么？',
+    taskTitle: '待办标题',
     notes: '备注（选填）',
     date: '计划日期',
     color: '卡片颜色',
@@ -84,15 +74,14 @@ const copy = {
     error: '操作失败',
     doneToast: '已导出备份',
     recovered: '已从自动备份恢复清单，原文件已保留。',
-    firstTitle: '给小事，一个安静的角落。',
-    firstSub: '欢迎使用 LightTodo。清单默认保存在本机，你也可以选择自己的数据文件夹。',
-    begin: '开始记录',
-    defaultFolder: '使用默认文件夹',
     loading: '正在打开清单…',
     markDone: '标记完成',
     markUndone: '标记未完成',
-    settingsNote: '窗口大小、位置和偏好会自动记住。',
-    allDone: '都完成了，给自己一点掌声。',
+    autoStart: '开机自启动',
+    installedOnly: '安装后可用',
+    moveUp: '上移',
+    moveDown: '下移',
+    drag: '拖动排序',
     palette: { mint: '薄荷绿', blue: '雾蓝', peach: '奶杏', lavender: '淡紫' },
   },
   en: {
@@ -100,13 +89,6 @@ const copy = {
     week: 'Week',
     month: 'Month',
     year: 'Year',
-    title: {
-      today: 'A little less rush.',
-      week: 'One gentle week.',
-      month: 'Make room to grow.',
-      year: 'A year of little steps.',
-    },
-    subtitle: 'Make space for the little things that matter.',
     add: 'Add a task',
     search: 'Search this list…',
     settings: 'Preferences',
@@ -118,15 +100,12 @@ const copy = {
     pending: 'TO DO',
     completed: 'COMPLETED',
     overdue: 'OVERDUE',
-    empty: 'A little space to breathe.',
-    emptySub: 'Start with one small thing.',
+    empty: 'No tasks',
     noResults: 'No matching tasks',
     noResultsSub: 'Try another keyword or time range.',
-    progress: 'A little progress, every day',
-    footer: 'Small steps still move you forward.',
-    newTask: 'One small thing',
+    newTask: 'New task',
     editTask: 'Edit task',
-    taskTitle: 'What’s on your mind?',
+    taskTitle: 'Task title',
     notes: 'Notes (optional)',
     date: 'Planned date',
     color: 'Card color',
@@ -153,16 +132,14 @@ const copy = {
     error: 'Something went wrong',
     doneToast: 'Backup exported',
     recovered: 'List recovered from the automatic backup. Original file preserved.',
-    firstTitle: 'A quiet corner for your day.',
-    firstSub:
-      'Welcome to LightTodo. Your list is saved on this device. You can choose a different folder anytime.',
-    begin: 'Start your list',
-    defaultFolder: 'Use default folder',
     loading: 'Opening your list…',
     markDone: 'Mark complete',
     markUndone: 'Mark incomplete',
-    settingsNote: 'Window size, position and preferences are remembered.',
-    allDone: 'All done. Take a little bow.',
+    autoStart: 'Launch at login',
+    installedOnly: 'Available after installation',
+    moveUp: 'Move up',
+    moveDown: 'Move down',
+    drag: 'Drag to reorder',
     palette: { mint: 'Mint', blue: 'Blue', peach: 'Peach', lavender: 'Lavender' },
   },
 };
@@ -177,6 +154,7 @@ function App() {
     language: 'zh',
     alwaysOnTop: false,
     opacity: 1,
+    autoStart: false,
   });
   const [period, setPeriod] = useState<Period>('today');
   const [query, setQuery] = useState('');
@@ -186,9 +164,9 @@ function App() {
   const [status, setStatus] = useState<'saved' | 'saving' | 'failed'>('saved');
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
-  const [welcome, setWelcome] = useState(false);
   const [now, setNow] = useState(new Date());
   const latest = useRef(todos),
+    dragging = useRef<string | null>(null),
     saveQueue = useRef(Promise.resolve()),
     revision = useRef(0),
     settingsQueue = useRef(Promise.resolve()),
@@ -208,7 +186,6 @@ function App() {
       .load()
       .then((s) => {
         accept(s);
-        setWelcome(s.data.todos.length === 0);
         if (s.recovered) setNotice(copy[s.settings.language].recovered);
       })
       .catch((e) => setFatal(String(e)));
@@ -269,7 +246,12 @@ function App() {
     settingsQueue.current = settingsQueue.current
       .catch(() => {})
       .then(() => window.lighttodo.settings(next))
-      .then(() => {})
+      .then((actual) => {
+        if (settingsRef.current === next) {
+          settingsRef.current = actual;
+          setSettings(actual);
+        }
+      })
       .catch((e) => {
         if (settingsRef.current === next) {
           settingsRef.current = previous;
@@ -320,22 +302,74 @@ function App() {
         : [...latest.current, task],
     );
     setEditor(null);
-    setWelcome(false);
   }
   const visible = selectTodos(todos, period, query, now),
     pending = visible.filter((x) => !x.done),
     done = visible.filter((x) => x.done);
-  const overdue = period === 'today' ? pending.filter((x) => x.date < dateKey(now)) : [],
-    active = pending.filter((x) => !overdue.includes(x));
-  const progress = visible.length ? Math.round((done.length / visible.length) * 100) : 0;
   const dateLabel = new Intl.DateTimeFormat(zh ? 'zh-CN' : 'en-US', {
     month: 'long',
     day: 'numeric',
     weekday: 'long',
   }).format(now);
-  function Task({ task }: { task: Todo }) {
+  function move(source: string, target: string) {
+    const next = reorderTodos(
+      latest.current,
+      visible.map((t) => t.id),
+      source,
+      target,
+    );
+    if (next !== latest.current) persist(next);
+  }
+  function renderTask(task: Todo) {
+    const group = task.done ? done : pending,
+      index = group.findIndex((t) => t.id === task.id);
     return (
-      <article className={`task ${task.color} ${task.done ? 'is-done' : ''}`} data-testid="task">
+      <article
+        key={task.id}
+        className={`task ${task.color} ${task.done ? 'is-done' : ''}`}
+        data-testid="task"
+        data-id={task.id}
+        onDragOver={(e) => {
+          if (
+            dragging.current &&
+            latest.current.find((t) => t.id === dragging.current)?.done === task.done
+          ) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            e.currentTarget.classList.add('drop-target');
+          }
+        }}
+        onDragLeave={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node))
+            e.currentTarget.classList.remove('drop-target');
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          e.currentTarget.classList.remove('drop-target');
+          const source = dragging.current;
+          dragging.current = null;
+          if (source) move(source, task.id);
+        }}
+      >
+        <button
+          className="drag-handle"
+          draggable
+          title={t.drag}
+          aria-label={`${t.drag}: ${task.title}`}
+          onDragStart={(e) => {
+            dragging.current = task.id;
+            e.dataTransfer.setData('text/plain', task.id);
+            e.dataTransfer.effectAllowed = 'move';
+          }}
+          onDragEnd={() => {
+            dragging.current = null;
+            document
+              .querySelectorAll('.drop-target')
+              .forEach((el) => el.classList.remove('drop-target'));
+          }}
+        >
+          <GripVertical size={13} />
+        </button>
         <button
           className="checkbox"
           aria-label={task.done ? t.markUndone : t.markDone}
@@ -353,12 +387,32 @@ function App() {
         >
           <span className="task-title">{task.title}</span>
           {task.notes && <span className="task-notes">{task.notes}</span>}
-          <span className="task-date">
+          <span
+            className={`task-date ${!task.done && task.date < dateKey(now) ? 'overdue-date' : ''}`}
+          >
             <CalendarDays size={11} />
             {task.date}
           </span>
         </button>
         <div className="task-actions">
+          <button
+            className="icon-button"
+            disabled={index === 0}
+            aria-label={`${t.moveUp}: ${task.title}`}
+            title={t.moveUp}
+            onClick={() => move(task.id, group[index - 1].id)}
+          >
+            <ChevronUp size={13} />
+          </button>
+          <button
+            className="icon-button"
+            disabled={index === group.length - 1}
+            aria-label={`${t.moveDown}: ${task.title}`}
+            title={t.moveDown}
+            onClick={() => move(task.id, group[index + 1].id)}
+          >
+            <ChevronDown size={13} />
+          </button>
           <button
             className="icon-button"
             title={t.edit}
@@ -388,9 +442,7 @@ function App() {
             <span className="count">{items.length}</span>
             <span className="hairline" />
           </div>
-          {items.map((task) => (
-            <Task key={task.id} task={task} />
-          ))}
+          {items.map(renderTask)}
         </section>
       )
     );
@@ -479,40 +531,11 @@ function App() {
           ))}
         </nav>
         <main className="scroll-area">
-          <div className="hero">
-            <div className="eyebrow">
-              <Sun size={13} />
-              <span>{dateLabel}</span>
-            </div>
-            <h1>{t.title[period]}</h1>
-            <p>{t.subtitle}</p>
-            <div className="hero-orb orb-one" />
-            <div className="hero-orb orb-two" />
-            <span className="hero-spark">
-              <Sparkles size={25} strokeWidth={1.2} />
+          <div className="list-summary">
+            <span>{dateLabel}</span>
+            <span>
+              {done.length} / {visible.length}
             </span>
-          </div>
-          <div className="progress-card">
-            <div className="progress-top">
-              <span>{t.progress}</span>
-              <strong>
-                {done.length}
-                <small> / {visible.length}</small>
-              </strong>
-            </div>
-            <div className="progress-track">
-              <div style={{ width: `${progress}%` }} />
-            </div>
-            <div className="progress-bottom">
-              <span>
-                {visible.length > 0 && pending.length === 0
-                  ? t.allDone
-                  : zh
-                    ? `还有 ${pending.length} 件小事，按自己的节奏来`
-                    : `${pending.length} little things. At your own pace.`}
-              </span>
-              <span>{progress}%</span>
-            </div>
           </div>
           <div className="list-toolbar">
             <label className="search">
@@ -538,18 +561,12 @@ function App() {
               <span>{t.add}</span>
             </button>
           </div>
-          {section(t.overdue, overdue, 'overdue-group')}
-          {section(t.pending, active)}
+          {section(t.pending, pending)}
           {section(t.completed, done, 'completed-group')}
           {visible.length === 0 && (
             <div className="empty-state">
-              <div className="empty-art">
-                <CheckCheck size={36} strokeWidth={1.3} />
-                <span />
-                <i />
-              </div>
               <h2>{query ? t.noResults : t.empty}</h2>
-              <p>{query ? t.noResultsSub : t.emptySub}</p>
+              {query && <p>{t.noResultsSub}</p>}
               {!query && (
                 <button className="text-button" onClick={() => openEditor()}>
                   {t.add}
@@ -558,10 +575,6 @@ function App() {
               )}
             </div>
           )}
-          <div className="gentle-note">
-            <Leaf size={12} />
-            {t.footer}
-          </div>
         </main>
         <footer className="statusbar">
           <span className={`save-status ${status}`} role="status">
@@ -572,48 +585,10 @@ function App() {
             <button className="text-button" onClick={() => persist(latest.current)}>
               {t.retry}
             </button>
-          ) : (
-            <span className="local-label">LOCAL FIRST</span>
-          )}
+          ) : null}
           <span className="resize-hint" />
         </footer>
       </div>
-      {welcome && !modalOpen && (
-        <div className="welcome-card" role="region" aria-label="Welcome">
-          <button
-            className="welcome-close icon-button"
-            aria-label={t.close}
-            onClick={() => setWelcome(false)}
-          >
-            <X size={14} />
-          </button>
-          <span className="welcome-icon">
-            <Leaf size={20} />
-          </span>
-          <h2>{t.firstTitle}</h2>
-          <p>{t.firstSub}</p>
-          <div className="welcome-path">{snapshot.dataDir}</div>
-          <div className="welcome-buttons">
-            <button
-              className="secondary"
-              disabled={busy}
-              onClick={() => fileAction(() => window.lighttodo.chooseFolder())}
-            >
-              {t.folder}
-            </button>
-            <button
-              className="primary"
-              onClick={() => {
-                setWelcome(false);
-                openEditor();
-              }}
-            >
-              {t.begin}
-              <ChevronRight size={14} />
-            </button>
-          </div>
-        </div>
-      )}
       {editor && (
         <Modal
           title={editor.task ? t.editTask : t.newTask}
@@ -728,6 +703,23 @@ function App() {
             />
             <p>{t.opacityHint}</p>
           </div>
+          <div className="settings-row">
+            <span>
+              <Power size={14} />
+              {t.autoStart}
+            </span>
+            <button
+              className={`toggle ${settings.autoStart ? 'on' : ''}`}
+              role="switch"
+              aria-label={t.autoStart}
+              aria-checked={settings.autoStart}
+              disabled={!snapshot.startupSupported}
+              title={!snapshot.startupSupported ? t.installedOnly : undefined}
+              onClick={() => updateSettings({ autoStart: !settings.autoStart })}
+            >
+              <span />
+            </button>
+          </div>
           <div className="storage-heading">
             <FolderOpen size={15} />
             {t.storage}
@@ -767,7 +759,7 @@ function App() {
               {t.restore}
             </button>
           </div>
-          <p className="settings-note">{t.settingsNote}</p>
+
           <div className="settings-footer">
             <Leaf size={13} />
             {t.local}

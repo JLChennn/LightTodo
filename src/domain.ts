@@ -17,6 +17,7 @@ export interface Settings {
   language: 'zh' | 'en';
   alwaysOnTop: boolean;
   opacity: number;
+  autoStart: boolean;
 }
 export interface Snapshot {
   data: Data;
@@ -25,6 +26,7 @@ export interface Snapshot {
   recovered: boolean;
   platform: string;
   version: string;
+  startupSupported: boolean;
 }
 export function dateKey(d = new Date()): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -62,11 +64,25 @@ export function selectTodos(
         ((t.date >= start && t.date <= end) || (period === 'today' && !t.done && t.date < today)) &&
         (!q || `${t.title}\n${t.notes}`.toLocaleLowerCase().includes(q)),
     )
-    .sort(
-      (a, b) =>
-        Number(a.done) - Number(b.done) ||
-        a.date.localeCompare(b.date) ||
-        a.createdAt.localeCompare(b.createdAt) ||
-        a.id.localeCompare(b.id),
-    );
+    .sort((a, b) => Number(a.done) - Number(b.done));
+}
+
+// Only reorder slots visible in the same completion group. Hidden tasks retain their positions.
+export function reorderTodos(
+  todos: Todo[],
+  visibleIds: string[],
+  sourceId: string,
+  targetId: string,
+): Todo[] {
+  const source = todos.find((t) => t.id === sourceId),
+    target = todos.find((t) => t.id === targetId);
+  if (!source || !target || source.done !== target.done || sourceId === targetId) return todos;
+  const allowed = new Set(visibleIds);
+  const group = todos.filter((t) => allowed.has(t.id) && t.done === source.done);
+  const from = group.findIndex((t) => t.id === sourceId),
+    to = group.findIndex((t) => t.id === targetId);
+  if (from < 0 || to < 0) return todos;
+  group.splice(to, 0, group.splice(from, 1)[0]);
+  let index = 0;
+  return todos.map((t) => (allowed.has(t.id) && t.done === source.done ? group[index++] : t));
 }

@@ -1,10 +1,18 @@
 # LightTodo
 
-**轻一点，做得到。** 一个清爽、安静的桌面待办清单，使用马卡龙配色，数据留在自己的电脑里。
+极简桌面待办清单。马卡龙配色、本地存储，支持 Windows 和 macOS。
 
 [下载安装包](https://github.com/JLChennn/LightTodo/releases/latest) · [反馈问题](https://github.com/JLChennn/LightTodo/issues) · [验证记录](docs/VERIFICATION.md) · [MIT 许可证](LICENSE)
 
-![LightTodo 中文界面](docs/images/app-zh.png)
+## UI 展示
+
+默认紧凑界面（360 × 460，主屏幕左上角）：
+
+<img src="docs/images/app-compact.png" width="360" alt="LightTodo 默认紧凑界面" />
+
+展开后的清单与设置面板：
+
+<img src="docs/images/app-zh.png" width="360" alt="LightTodo 清单" /> <img src="docs/images/settings.png" width="360" alt="LightTodo 设置：置顶、透明度、自启动和数据目录" />
 
 ## 我只想使用，不会编程
 
@@ -13,8 +21,8 @@
 ### Windows 安装
 
 1. 打开上面的「下载安装包」链接，找到版本页面的 **Assets（资源）**。
-2. 下载以 `.exe` 结尾的文件，例如 `LightTodo-1.0.0-win-x64.exe`。不要下载 `Source code`，那是给开发者看的源码。
-3. 双击安装包，选择安装位置，按向导完成安装。
+2. 下载以 `.exe` 结尾的文件，例如 `LightTodo-1.1.0-win-x64.exe`。不要下载 `Source code`，那是给开发者看的源码。
+3. 双击安装包，在「选择安装位置」页面点「浏览」，可以选择其他磁盘或文件夹（例如 `D:\Apps\LightTodo`），再点「安装」。安装采用向导模式，不会跳过路径选择。更改安装目录不会移动个人清单数据。
 4. 双击桌面上的 **LightTodo** 图标，就可以开始使用。
 
 目前提供 Windows x64 安装包。ARM Windows 是否可用取决于系统的 x64 模拟能力，尚未验收。
@@ -24,8 +32,8 @@
 ### Mac 安装
 
 1. 在同一个下载页面，下载以 `.dmg` 结尾的文件。
-2. 双击打开，将 **LightTodo** 拖到 **Applications（应用程序）** 文件夹。
-3. 从「应用程序」中打开 LightTodo。
+2. 双击打开，将 **LightTodo** 拖到 **Applications（应用程序）**，也可以用 Finder 复制到自定义目录（例如 `~/Applications`）。不要直接在 DMG 里长期运行。
+3. 从你选定的文件夹打开 LightTodo。若开启了自启动后又移动应用，请在设置中关闭后重新开启自启动，以更新路径。
 
 macOS 使用 `.dmg`，不使用 `.exe`。提供 Universal 安装包，同时包含 Apple 芯片和 Intel 架构。
 
@@ -33,10 +41,9 @@ macOS 使用 `.dmg`，不使用 `.exe`。提供 Universal 安装包，同时包�
 
 ## 第一次打开
 
-默认打开「今日」，界面语言为中文。欢迎卡片会显示数据保存位置：
+默认打开「今日」，界面语言为中文。每次启动以约 **360 × 460** 的最小窗口放在主屏幕可用区域左上角（距边缘 16 个逻辑像素）。Windows 显示缩放可能使外框有少量取整差异，启动后仍可自由缩放和移动。
 
-- 直接点「开始记录」，使用默认文件夹；
-- 或点「更换文件夹」，选择你熟悉的位置，例如 `文档/LightTodo数据`。
+点「添加待办」开始使用。数据默认保存在本机；如需自选目录，打开右上角「偏好设置 → 更换文件夹」。
 
 安装目录和数据目录是两回事。日常无需手动编辑数据文件。
 
@@ -49,6 +56,7 @@ macOS 使用 `.dmg`，不使用 `.exe`。提供 Universal 安装包，同时包�
 | 完成待办 | 点左边方框；任务变灰、加删除线，并移到未完成任务下面 |
 | 恢复为未完成 | 再点一次已勾选的方框 |
 | 删除待办 | 将鼠标移到卡片上，点垃圾桶图标，再确认删除 |
+| 自定义排序 | 拖动卡片左侧六点手柄；也可以将鼠标移到卡片上，点上移 / 下移箭头。排序会自动保存 |
 | 查找待办 | 输入搜索词，匹配当前时间范围内的标题或备注；查全年可切到「今年」 |
 | 切换时间范围 | 顶部点「今日 / 本周 / 本月 / 今年」 |
 | 固定在其他窗口上面 | 点右上角图钉；再次点击取消。系统安全界面、部分全屏窗口可能仍覆盖它 |
@@ -57,6 +65,7 @@ macOS 使用 `.dmg`，不使用 `.exe`。提供 Universal 安装包，同时包�
 | 上下滚动 | 鼠标滚轮、触控板或右侧滚动条；设置弹窗也可滚动 |
 | 调整透明度 | 点右上角设置图标，拖动「窗口不透明度」，范围为 35%–100% |
 | 改为英文 | 设置 → 界面语言 → EN；点「中文」切回 |
+| 开机自启动 | 设置 → 开机自启动。默认关闭，开启后在当前用户登录系统时打开；关闭即可移除启动项 |
 
 快捷键：**Ctrl+N / ⌘N** 新增待办；**Esc** 关闭弹窗；**Tab / Shift+Tab** 切换控件。
 
@@ -67,9 +76,18 @@ macOS 使用 `.dmg`，不使用 `.exe`。提供 Universal 安装包，同时包�
 - 本周：周一到周日，包括跨月、跨年的一周。
 - 本月 / 今年：按本机日期对应的自然月 / 自然年筛选。
 - 之前未完成的任务不会自动改日期；完成后回到它原计划日期所属的范围。往年任务仍保留在本地 JSON 中；当前版本没有历史年份导航。
-- 每个范围内，所有未完成任务都在已完成任务上方；组内按计划日期、创建时间排序。
-- 进度按当前范围及搜索结果计算，文字里的任务数会随筛选变化。
-- 重启默认回到「今日」，语言、置顶、透明度、窗口大小和位置会记住。
+- 每个范围内，所有未完成任务都在已完成任务上方；两组内均可自定义顺序，不能跨完成状态拖动。过期任务以日期颜色区分，不再强制单独分组。
+- 顺序全局保存，各日期范围和搜索沿用同一顺序；筛选后排序只调整可见条目，隐藏条目的相对位置不变。勾选后下移至完成组，取消勾选后回到未完成组中的原顺序。
+- 日期右侧显示「已完成数 / 当前结果总数」，不再显示装饰性进度卡片。
+- 重启默认回到「今日」和左上角最小窗口；语言、置顶和透明度会记住。
+
+### 关于开机自启动
+
+自启动仅在**安装后的应用**中可用，源码开发模式下开关禁用，避免把 Electron 开发程序加入启动项。
+
+- Windows：使用当前安装目录下的 `LightTodo.exe` 注册当前用户启动项，支持含空格的自定义路径。可在应用设置里关闭；正常卸载也会清理启动项，升级安装保留已有启动项。
+- macOS：在当前用户 `~/Library/LaunchAgents/io.github.jlchennn.lighttodo.plist` 注册登录启动项；关闭开关会删除该文件。如果系统提示允许后台项目，请由你决定是否允许。删除 Mac 应用前建议先关闭此开关。
+- 「开机」指用户登录后启动，不是在登录前运行后台服务。本版本验证了注册、读取和关闭流程，未通过真实重启/重新登录验证。
 
 ## 数据在哪里？怎么备份？
 
@@ -120,7 +138,7 @@ macOS 使用 `.dmg`，不使用 `.exe`。提供 Universal 安装包，同时包�
 
 **透明后文字也淡了？** 这是整个窗口的不透明度，包含文字。调回 100% 即可。
 
-**外接显示器拔掉后找不到窗口？** 重启时会检测位置是否在可用屏幕内；不在时回到默认位置。
+**外接显示器拔掉后找不到窗口？** 退出后重新启动，窗口会回到当前主屏幕左上角。
 
 **磁盘或文件夹暂时不可用？** 重新接入磁盘或恢复访问权限后再启动。应用不会为了继续运行而悄悄新建另一份清单覆盖原数据。
 
@@ -163,10 +181,22 @@ docs/           实际界面截图、验证记录
 
 测试使用独立的 `.test-data/`，不会读取或修改日常清单。仅开发模式接受 `LIGHTTODO_TEST_HOME` 覆盖测试数据位置，安装后的应用忽略它。
 
+### Clone 到本地，用 AI 自行 DIY
+
+本项目采用 MIT 许可证，支持 clone 到本地，自由修改、扩展功能和重新打包。你可以在 Codex、Cursor 等支持本地代码的 AI 开发工具中打开项目文件夹，用自然语言描述想要的改动。
+
+例如把下面这段话发给 AI：
+
+> 请先阅读这个项目的 README。我想给 LightTodo 增加「任务优先级」功能，保留现有极简风格、中英文切换和本地数据兼容性。请先说明改动方案，再实现功能，补充必要测试，并告诉我如何打包成安装包。
+
+推荐步骤：先执行上面的 `git clone`，用 AI 工具打开克隆后的 `LightTodo` 文件夹，让 AI 修改功能；运行 `npm test` 和 `npm run test:e2e` 验证，通过后在对应系统执行打包命令。修改前先在应用设置中导出清单备份。README 的 UI 展示可用作保持风格的参考。
+
+常见 DIY 方向：标签、优先级、提醒、重复任务、主题色。它们是可自行扩展的方向，不代表当前版本已经包含。
+
 ### 发布流程
 
 1. 更新 `package.json` 版本和锁定文件，完成测试。
-2. 先创建对应版本的 GitHub Release，例如 `v1.0.0`，写清未签名和验证边界。
+2. 先创建对应版本的草稿 GitHub Release，例如 `v1.1.0`，写清未签名和验证边界。
 3. 推送同名标签，触发 `Build and release`；Windows 和 macOS runner 分别打包并上传安装包。
 4. 检查两个构建任务及下载文件后再宣布交付。手动运行流水线只生成 Actions artifacts，不自动创建发布。
 
@@ -177,6 +207,8 @@ docs/           实际界面截图、验证记录
 LightTodo is a minimal, local-first desktop todo list for Windows and macOS. Download the installer from [Releases](https://github.com/JLChennn/LightTodo/releases/latest): `.exe` for Windows x64 or Universal `.dmg` for macOS. No developer tools or account are required to use it. Both builds are unsigned; macOS is not notarized and has not been verified on a physical Mac.
 
 Use Preferences → **EN** to switch language. Create, edit, search and complete tasks; completed items move below unfinished ones. Tasks are filtered by planned date. Today also includes unfinished overdue tasks. Weeks start on Monday. Pin the window, resize it, adjust opacity, and choose your local data folder in Preferences. Export JSON backups regularly. Restore replaces the current list after confirmation and creates a separate pre-restore backup. Your personal list is never uploaded to GitHub.
+
+Drag the grip handle or use the up/down buttons to reorder tasks. Enable launch at login in Preferences after installation. Each launch starts with a compact window at the top-left of the primary display. Windows setup lets you choose an installation directory; on macOS copy the app to your preferred folder. Clone the repository and open it in an AI coding tool to DIY features and build your own installer under the MIT license.
 
 ## License
 
