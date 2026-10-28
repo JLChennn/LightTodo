@@ -17,6 +17,8 @@
 - [Checks](https://github.com/JLChennn/LightTodo/actions/runs/40674556643)：Windows 检查通过。
 - [正式版本双平台流水线](https://github.com/JLChennn/LightTodo/actions/runs/40674625789)：Windows / macOS 两个任务均成功，分别运行同一套 8 项逻辑测试、2 项真实 Electron 交互测试并打包，安装包均成功上传。
 - 安装包对应源码提交：`1201b34`（标签 `v1.0.0`）；后续提交补充文档和验收脚本，不改变应用代码。
+- macOS 托管环境为 `macos-26-arm64`：执行了自动交互测试，分别打包 x64 与 arm64，再合并为 Universal 并进行 ad-hoc 签名；没有单独的 Intel Mac 运行验证。
+- 正式发布的 Windows / macOS 安装包已下载到本地，SHA-256 与 GitHub 服务端摘要一致；DMG 的 UDIF 文件尾标识为 `koly`。校验文件随 Release 提供。
 
 ## 验证边界
 
