@@ -15,7 +15,8 @@
 ## GitHub 托管环境
 
 - [Checks](https://github.com/JLChennn/LightTodo/actions/runs/40674556643)：Windows 检查通过。
-- [正式版本双平台流水线](https://github.com/JLChennn/LightTodo/actions/runs/40674625789)：Windows / macOS 分别运行同一套逻辑测试、真实 Electron 交互测试并打包。最终状态、安装包上传状态以该链接为准。
+- [正式版本双平台流水线](https://github.com/JLChennn/LightTodo/actions/runs/40674625789)：Windows / macOS 两个任务均成功，分别运行同一套 8 项逻辑测试、2 项真实 Electron 交互测试并打包，安装包均成功上传。
+- 安装包对应源码提交：`1201b34`（标签 `v1.0.0`）；后续提交补充文档和验收脚本，不改变应用代码。
 
 ## 验证边界
 
