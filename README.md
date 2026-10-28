@@ -1,5 +1,7 @@
 # LightTodo
 
+**简体中文** | [English](README.en.md)
+
 极简桌面待办清单。马卡龙配色、本地存储，支持 Windows 和 macOS。
 
 [下载安装包](https://github.com/JLChennn/LightTodo/releases/latest) · [反馈问题](https://github.com/JLChennn/LightTodo/issues) · [验证记录](docs/VERIFICATION.md) · [MIT 许可证](LICENSE)
@@ -202,14 +204,6 @@ docs/           实际界面截图、验证记录
 
 证书不写进源码。未来如加入签名，使用 GitHub Secrets 配置。当前发布明确为未签名版本。
 
-## English
-
-LightTodo is a minimal, local-first desktop todo list for Windows and macOS. Download the installer from [Releases](https://github.com/JLChennn/LightTodo/releases/latest): `.exe` for Windows x64 or Universal `.dmg` for macOS. No developer tools or account are required to use it. Both builds are unsigned; macOS is not notarized and has not been verified on a physical Mac.
-
-Use Preferences → **EN** to switch language. Create, edit, search and complete tasks; completed items move below unfinished ones. Tasks are filtered by planned date. Today also includes unfinished overdue tasks. Weeks start on Monday. Pin the window, resize it, adjust opacity, and choose your local data folder in Preferences. Export JSON backups regularly. Restore replaces the current list after confirmation and creates a separate pre-restore backup. Your personal list is never uploaded to GitHub.
-
-Drag the grip handle or use the up/down buttons to reorder tasks. Enable launch at login in Preferences after installation. Each launch starts with a compact window at the top-left of the primary display. Windows setup lets you choose an installation directory; on macOS copy the app to your preferred folder. Clone the repository and open it in an AI coding tool to DIY features and build your own installer under the MIT license.
-
-## License
+## 许可证
 
 [MIT](LICENSE) © 2026 JLChennn
