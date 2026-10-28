@@ -9,13 +9,15 @@
 - Windows 安装向导实际检查到可编辑「目标文件夹」和「浏览」控件；在含空格的自定义目录 `.test-data/Custom Install/LightTodo` 中实际安装并成功启动 v1.1.0。
 - 安装版自启动实际注册、读取和关闭成功，Windows 原生 API 返回 `openAtLogin: true`；测试结束恢复原设置。没有重启或重新登录用户电脑。
 - 紧凑、展开、设置界面截图均来自真实应用，已目视检查。测试截图仅使用演示任务。
-- 双平台正式构建和安装包完整性检查结果将在发布完成后补充。Mac 没有真机人工验收。
+- [v1.1.0 正式流水线](https://github.com/JLChennn/LightTodo/actions/runs/40714787331)：Windows / macOS 均通过逻辑测试、真实 Electron 交互测试、安装包构建、打包后程序启动和自启动注册/关闭检查。
+- 源码提交 `9e7946d`，标签 `v1.1.0`。Mac 为托管 Apple 芯片环境运行验证，Universal 包含 x64 / arm64；没有 Mac 真机人工验收，也未验证真实重启/重新登录。
+- Windows 正式发布文件已下载核对 SHA-256 并实际安装启动，版本为 1.1.0。恢复到原用户程序目录，桌面快捷方式可用，个人数据目录未变。
 
 ## 1.0.0 历史记录
 
 日期：2026-10-28。演示截图中的清单为测试样例，不是个人待办数据。
 
-## Windows 本机
+### Windows 本机
 
 - TypeScript 类型检查、Vite 生产构建通过。
 - 8 项逻辑/存储测试通过：周一周界、跨月跨年、闰年、过期待办、完成排序、中英文搜索、非法数据拒绝、中文路径、自动备份恢复、损坏原件保留、已配置文件缺失保护。
@@ -25,7 +27,7 @@
 - 安装后的程序实际启动验证：`app.isPackaged === true`、版本 `1.0.0`、窗口标题 `LightTodo`、本地数据接口读取成功。
 - 安装后的程序名称和文件版本信息正确。
 
-## GitHub 托管环境
+### GitHub 托管环境
 
 - [Checks](https://github.com/JLChennn/LightTodo/actions/runs/40674556643)：Windows 检查通过。
 - [正式版本双平台流水线](https://github.com/JLChennn/LightTodo/actions/runs/40674625789)：Windows / macOS 两个任务均成功，分别运行同一套 8 项逻辑测试、2 项真实 Electron 交互测试并打包，安装包均成功上传。
@@ -33,7 +35,7 @@
 - macOS 托管环境为 `macos-26-arm64`：执行了自动交互测试，分别打包 x64 与 arm64，再合并为 Universal 并进行 ad-hoc 签名；没有单独的 Intel Mac 运行验证。
 - 正式发布的 Windows / macOS 安装包已下载到本地，SHA-256 与 GitHub 服务端摘要一致；DMG 的 UDIF 文件尾标识为 `koly`。校验文件随 Release 提供。
 
-## 验证边界
+### 验证边界
 
 - macOS 托管 runner 的自动化验证不等于 Mac 真机人工安装验收；没有用户 Mac 参与验收。
 - Windows 不含受信任的代码签名；macOS 采用本地 ad-hoc 签名，不含 Apple Developer ID 签名或公证。
