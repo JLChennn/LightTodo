@@ -79,6 +79,11 @@ test('real desktop: CRUD, sorting, native settings, scrolling and restart', asyn
     await page.screenshot({ animations: 'disabled', path: 'test-results/app-en.png' });
     await desktop.close();
     await launch();
+    expect(
+      await desktop.evaluate(({ BrowserWindow }) =>
+        BrowserWindow.getAllWindows()[0].isAlwaysOnTop(),
+      ),
+    ).toBe(true);
     await expect(page.getByRole('button', { name: 'Today', exact: true })).toHaveAttribute(
       'aria-current',
       'page',

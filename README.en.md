@@ -29,7 +29,7 @@ You do not need Node.js, Python, developer tools, or a GitHub account to use the
 ### Install on Windows
 
 1. Open **Download installers** above and find **Assets** on the release page.
-2. Download the `.exe` file, such as `LightTodo-1.2.0-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
+2. Download the `.exe` file, such as `LightTodo-1.2.1-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
 3. Double-click the installer. On **Choose Install Location**, select **Browse** to choose another drive or folder, such as `D:\Apps\LightTodo`, then select **Install**. The setup wizard lets you choose the installation directory. Changing that directory does not move your personal task data.
 4. Open **LightTodo** using its desktop shortcut.
 
@@ -53,7 +53,7 @@ The app opens on **Today**, with Chinese as the default interface language. Sele
 
 Each launch starts with a minimum-size window of approximately **360 × 460**, positioned 16 logical pixels from the top-left of the primary display's usable area. Windows display scaling can slightly affect the outer frame dimensions. You can move and resize the window after launch.
 
-By default, LightTodo stays on the desktop below ordinary app windows. Select the pin icon to keep it above other windows; unpin to return to the desktop. On Windows, desktop mode is hidden from the taskbar and remains visible with Show Desktop. If you minimize it manually, reopen the app icon to restore it.
+Window behavior matches version 1.1.0: LightTodo opens as an ordinary window. Select the pin icon to keep it above other windows; select it again to return to normal window behavior. Windows shows its taskbar button, and minimizing or using Show Desktop follows normal system behavior.
 
 Select **Add a task** to begin. Data is saved locally by default. To choose another folder, open **Preferences → Change folder**.
 
@@ -96,11 +96,11 @@ Keyboard shortcuts: **Ctrl+N / ⌘N** adds a task; **Esc** closes a dialog; **Ta
 - The count beside the date shows **completed tasks / total matching tasks**.
 - Restarting returns to **Today** and the compact top-left window. Language, pinning, opacity, font size, color, and material preferences are remembered.
 
-### Desktop widget and glass material
+### Pinning and glass material
 
-In desktop mode, the list stays below ordinary app windows and remains editable, movable, and resizable. Pin it to display above other applications. Closing the app exits it; enable Launch at login to open it automatically when signing in. The macOS desktop widget can appear across workspaces.
+Pin the list to display above other applications; unpin to restore ordinary window behavior. Use the taskbar or Dock to switch to it. Pinning is remembered across restarts. Closing the app exits it; enable Launch at login to open it automatically when signing in.
 
-Glass uses native Vibrancy on macOS and Acrylic on Windows 11 22H2 or later. System version, desktop-layer composition, Reduce Transparency accessibility settings, and remote desktop sessions can affect background blur. When native blur is unavailable, the app retains a translucent tinted glass background. Glass keeps text separate from the background transparency; Window opacity affects the entire window, so start with 100% when using Glass.
+Glass uses native Vibrancy on macOS and Acrylic on Windows 11 22H2 or later. System version, Reduce Transparency accessibility settings, and remote desktop sessions can affect background blur. When native blur is unavailable, the app retains a translucent tinted glass background. Glass keeps text separate from the background transparency; Window opacity affects the entire window, so start with 100% when using Glass.
 
 ### About launch at login
 

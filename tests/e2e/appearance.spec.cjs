@@ -1,8 +1,9 @@
 const { test, expect, _electron: electron } = require('@playwright/test');
 const fs = require('node:fs/promises');
 const path = require('node:path');
+const execFile = require('node:util').promisify(require('node:child_process').execFile);
 
-test('desktop widget, appearance controls, large text and restart persistence', async () => {
+test('ordinary window pinning, appearance controls, large text and restart persistence', async () => {
   const home = path.resolve('.test-data/appearance');
   await fs.rm(home, { recursive: true, force: true });
   const env = { ...process.env, LIGHTTODO_TEST_HOME: home };
@@ -16,22 +17,43 @@ test('desktop widget, appearance controls, large text and restart persistence', 
   };
   try {
     let page = await launch();
+    const nativeWindow = async () => {
+      const handle = await app.evaluate(({ BrowserWindow }) =>
+        BrowserWindow.getAllWindows()[0].getNativeWindowHandle().readBigUInt64LE().toString(),
+      );
+      const { stdout } = await execFile(
+        'powershell.exe',
+        [
+          '-NoProfile',
+          '-NonInteractive',
+          '-ExecutionPolicy',
+          'Bypass',
+          '-File',
+          path.resolve('tests/window-state.ps1'),
+          '-WindowHandle',
+          handle,
+        ],
+        { windowsHide: true },
+      );
+      return JSON.parse(stdout);
+    };
     await expect(page.locator('.brand-dot')).toHaveCount(0);
-    if (process.platform === 'win32') {
-      const k = require('koffi'),
-        u = k.load('user32.dll');
-      const getOwner = u.func('uintptr_t GetParent(uintptr_t hwnd)');
-      const getShell = u.func('uintptr_t GetShellWindow()');
-      const native = await app.evaluate(({ BrowserWindow }) => {
-        const w = BrowserWindow.getAllWindows()[0];
-        return {
-          hwnd: w.getNativeWindowHandle().readBigUInt64LE().toString(),
-          pinned: w.isAlwaysOnTop(),
-        };
+    expect(
+      await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isAlwaysOnTop()),
+    ).toBe(false);
+    if (process.platform === 'win32')
+      expect(await nativeWindow()).toEqual({
+        parent: '0',
+        child: false,
+        toolWindow: false,
+        topmost: false,
       });
-      expect(BigInt(getOwner(BigInt(native.hwnd)))).toBe(BigInt(getShell()));
-      expect(native.pinned).toBe(false);
-    }
+    if (process.platform === 'darwin')
+      expect(
+        await app.evaluate(({ BrowserWindow }) =>
+          BrowserWindow.getAllWindows()[0].isVisibleOnAllWorkspaces(),
+        ),
+      ).toBe(false);
     await page.getByRole('button', { name: '偏好设置', exact: true }).click();
     await page
       .getByRole('group', { name: '界面配色' })
@@ -51,13 +73,28 @@ test('desktop widget, appearance controls, large text and restart persistence', 
         app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isAlwaysOnTop()),
       )
       .toBe(true);
+    if (process.platform === 'win32') expect((await nativeWindow()).topmost).toBe(true);
     await page.getByRole('switch', { name: 'Keep on top', exact: true }).click();
     await expect
       .poll(() =>
         app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isAlwaysOnTop()),
       )
       .toBe(false);
+    if (process.platform === 'win32')
+      expect(await nativeWindow()).toEqual({
+        parent: '0',
+        child: false,
+        toolWindow: false,
+        topmost: false,
+      });
     await page.keyboard.press('Escape');
+    await page.getByRole('button', { name: 'Minimize', exact: true }).click();
+    await expect
+      .poll(() =>
+        app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isMinimized()),
+      )
+      .toBe(true);
+    await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].restore());
     expect(await page.locator('.titlebar').evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(
       true,
     );

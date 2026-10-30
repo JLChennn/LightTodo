@@ -4,7 +4,6 @@ const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { atomicWrite, loadData, readData, validateData, cleanSettings } = require('./store.cjs');
 const { createStartup } = require('./startup.cjs');
-const { createDesktop } = require('./desktop.cjs');
 
 if (process.env.LIGHTTODO_TEST_HOME)
   app.setPath('userData', path.resolve(process.env.LIGHTTODO_TEST_HOME));
@@ -18,7 +17,6 @@ let win,
   unsaved = false;
 let queue = Promise.resolve();
 let startup;
-let desktop;
 const configFile = () => path.join(app.getPath('userData'), 'settings.json');
 const dataFile = () => path.join(config.dataDir, 'lighttodo.json');
 const entry = path.join(__dirname, '../dist/index.html');
@@ -32,7 +30,7 @@ async function saveConfig() {
   await atomicWrite(configFile(), config);
 }
 function applySettings() {
-  desktop.apply(config.alwaysOnTop);
+  win.setAlwaysOnTop(config.alwaysOnTop);
   win.setOpacity(config.opacity);
   const glass = config.appearance === 'glass';
   win.setBackgroundColor(glass ? '#00000000' : '#faf9f6');
@@ -178,7 +176,7 @@ function register() {
     data = next;
     return snapshot();
   });
-  handle('window:minimize', () => desktop.minimize());
+  handle('window:minimize', () => win.minimize());
   handle('window:close', () => {
     setImmediate(() => win.close());
   });
@@ -216,9 +214,7 @@ async function createWindow() {
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   win.webContents.on('will-navigate', (e) => e.preventDefault());
   win.webContents.session.setPermissionRequestHandler((_w, _p, cb) => cb(false));
-  desktop = createDesktop(win);
   applySettings();
-  win.once('closed', () => desktop.dispose());
   win.on('close', (e) => {
     if (closing) return;
     e.preventDefault();
@@ -248,10 +244,7 @@ async function createWindow() {
       })
       .catch((error) => dialog.showErrorBox('LightTodo', error.message));
   });
-  win.once('ready-to-show', () => {
-    win.showInactive();
-    applySettings();
-  });
+  win.once('ready-to-show', () => win.show());
   await win.loadFile(entry);
 }
 if (single) {
