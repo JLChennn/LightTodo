@@ -10,7 +10,10 @@
 - Windows 4 项真实 Electron 场景通过，新增大字号紧凑布局、配色与材质双向切换、重启恢复偏好、桌面挂接、置顶切换、Windows 显示桌面后原生鼠标命中、普通应用覆盖组件，以及主动最小化保持。
 - 玻璃材质调用 macOS Vibrancy / Windows Acrylic 接口；实际背景模糊受系统合成及桌面层限制，未宣称所有机器都有相同模糊效果。
 - 测试使用独立目录和演示任务；未安装到用户原应用目录，未修改个人待办。
-- macOS 真机交互、Intel 真机与真实重新登录仍未验收。双平台发布构建结果见对应 GitHub Release。
+- [1.2.0 正式构建](https://github.com/JLChennn/LightTodo/actions/runs/41007840722) 对应源码 `73c64c0`（标签 `v1.2.0`），Windows / macOS 均成功。Windows 4 项桌面场景通过，macOS 3 项通过、1 项 Windows 专项按平台跳过；两平台各 13 项逻辑测试通过。
+- Windows x64 和 macOS Universal 包均通过打包后启动、版本与数据接口读取、自启动注册及关闭检查。Windows 本机亦从构建目录启动安装版程序成功，使用独立测试目录。
+- 正式 Windows / macOS 安装包已下载到本地，SHA-256 与 GitHub Release 服务端摘要逐一一致；随版本提供 `SHA256SUMS-v1.2.0.txt`。本次没有执行用户环境安装。
+- macOS 真机交互、Intel 真机与真实重新登录仍未验收。
 
 ## 1.1.0
 
