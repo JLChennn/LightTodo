@@ -76,7 +76,7 @@ test('real desktop: CRUD, sorting, native settings, scrolling and restart', asyn
     await desktop.evaluate(({ BrowserWindow }) =>
       BrowserWindow.getAllWindows()[0].setSize(380, 510),
     );
-    await page.screenshot({ animations:'disabled', path: 'docs/images/app-en.png' });
+    await page.screenshot({ animations: 'disabled', path: 'test-results/app-en.png' });
     await desktop.close();
     await launch();
     await expect(page.getByRole('button', { name: 'Today', exact: true })).toHaveAttribute(
@@ -101,7 +101,7 @@ test('real desktop: CRUD, sorting, native settings, scrolling and restart', asyn
     await page.locator('#opacity').fill('100');
     await page.getByRole('switch', { name: '置顶窗口', exact: true }).click();
     await page.locator('.modal').evaluate((el) => (el.scrollTop = 0));
-    await page.screenshot({ animations:'disabled', path: 'docs/images/settings.png' });
+    await page.screenshot({ animations: 'disabled', path: 'test-results/settings.png' });
     await page.keyboard.press('Escape');
     await page
       .getByTestId('task')
@@ -143,16 +143,16 @@ test('real desktop: CRUD, sorting, native settings, scrolling and restart', asyn
     await desktop.evaluate(({ BrowserWindow }) =>
       BrowserWindow.getAllWindows()[0].setSize(440, 780),
     );
-    await page.screenshot({ animations:'disabled', path: 'docs/images/app-zh.png' });
+    await page.screenshot({ animations: 'disabled', path: 'test-results/app-zh.png' });
     await page.getByRole('button', { name: '偏好设置', exact: true }).click();
     await page.locator('.modal').evaluate((el) => (el.scrollTop = 0));
-    await page.screenshot({ animations:'disabled', path: 'docs/images/settings.png' });
+    await page.screenshot({ animations: 'disabled', path: 'test-results/settings.png' });
     await page.keyboard.press('Escape');
     await desktop.evaluate(({ BrowserWindow }) =>
       BrowserWindow.getAllWindows()[0].setSize(360, 460),
     );
     await page.locator('.list-summary').click();
-    await page.screenshot({ animations:'disabled', path: 'docs/images/app-compact.png' });
+    await page.screenshot({ animations: 'disabled', path: 'test-results/app-compact.png' });
     expect(
       await page.locator('.scroll-area').evaluate((el) => el.scrollHeight > el.clientHeight),
     ).toBe(true);

@@ -18,6 +18,9 @@ export interface Settings {
   alwaysOnTop: boolean;
   opacity: number;
   autoStart: boolean;
+  fontSize: number;
+  theme: Color;
+  appearance: 'solid' | 'glass';
 }
 export interface Snapshot {
   data: Data;

@@ -105,6 +105,12 @@ function cleanSettings(input = {}) {
     language: input.language === 'en' ? 'en' : 'zh',
     alwaysOnTop: input.alwaysOnTop === true,
     autoStart: input.autoStart === true,
+    fontSize:
+      typeof input.fontSize === 'number' && Number.isFinite(input.fontSize)
+        ? Math.round(Math.max(12, Math.min(20, input.fontSize)))
+        : 13,
+    theme: ['mint', 'blue', 'peach', 'lavender'].includes(input.theme) ? input.theme : 'mint',
+    appearance: input.appearance === 'glass' ? 'glass' : 'solid',
     opacity:
       typeof input.opacity === 'number' && Number.isFinite(input.opacity)
         ? Math.max(0.35, Math.min(1, input.opacity))

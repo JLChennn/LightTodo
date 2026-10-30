@@ -4,8 +4,9 @@ const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { atomicWrite, loadData, readData, validateData, cleanSettings } = require('./store.cjs');
 const { createStartup } = require('./startup.cjs');
+const { createDesktop } = require('./desktop.cjs');
 
-if (!app.isPackaged && process.env.LIGHTTODO_TEST_HOME)
+if (process.env.LIGHTTODO_TEST_HOME)
   app.setPath('userData', path.resolve(process.env.LIGHTTODO_TEST_HOME));
 const single = app.requestSingleInstanceLock();
 if (!single) app.quit();
@@ -17,6 +18,7 @@ let win,
   unsaved = false;
 let queue = Promise.resolve();
 let startup;
+let desktop;
 const configFile = () => path.join(app.getPath('userData'), 'settings.json');
 const dataFile = () => path.join(config.dataDir, 'lighttodo.json');
 const entry = path.join(__dirname, '../dist/index.html');
@@ -30,8 +32,12 @@ async function saveConfig() {
   await atomicWrite(configFile(), config);
 }
 function applySettings() {
-  win.setAlwaysOnTop(config.alwaysOnTop);
+  desktop.apply(config.alwaysOnTop);
   win.setOpacity(config.opacity);
+  const glass = config.appearance === 'glass';
+  win.setBackgroundColor(glass ? '#00000000' : '#faf9f6');
+  if (process.platform === 'win32') win.setBackgroundMaterial(glass ? 'acrylic' : 'none');
+  if (process.platform === 'darwin') win.setVibrancy(glass ? 'under-window' : null);
 }
 async function snapshot() {
   config.autoStart = await startup.get();
@@ -72,8 +78,8 @@ function register() {
     config = { ...config, ...cleanSettings(input) };
     try {
       if (config.autoStart !== previous.autoStart) await startup.set(config.autoStart);
-      await saveConfig();
       applySettings();
+      await saveConfig();
     } catch (e) {
       config = previous;
       if (startup.supported && (await startup.get()) !== previous.autoStart)
@@ -172,7 +178,7 @@ function register() {
     data = next;
     return snapshot();
   });
-  handle('window:minimize', () => win.minimize());
+  handle('window:minimize', () => desktop.minimize());
   handle('window:close', () => {
     setImmediate(() => win.close());
   });
@@ -188,6 +194,8 @@ async function createWindow() {
     minHeight: 460,
     show: false,
     frame: false,
+    transparent: true,
+    visualEffectState: 'active',
     resizable: true,
     backgroundColor: '#faf9f6',
     title: 'LightTodo',
@@ -208,7 +216,9 @@ async function createWindow() {
   win.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   win.webContents.on('will-navigate', (e) => e.preventDefault());
   win.webContents.session.setPermissionRequestHandler((_w, _p, cb) => cb(false));
+  desktop = createDesktop(win);
   applySettings();
+  win.once('closed', () => desktop.dispose());
   win.on('close', (e) => {
     if (closing) return;
     e.preventDefault();
@@ -238,7 +248,10 @@ async function createWindow() {
       })
       .catch((error) => dialog.showErrorBox('LightTodo', error.message));
   });
-  win.once('ready-to-show', () => win.show());
+  win.once('ready-to-show', () => {
+    win.showInactive();
+    applySettings();
+  });
   await win.loadFile(entry);
 }
 if (single) {

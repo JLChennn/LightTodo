@@ -10,13 +10,17 @@ A minimal desktop todo list with pastel colors and local storage, for Windows an
 
 The default compact window (360 × 460) opens at the top-left of the primary display:
 
-<img src="docs/images/app-compact.png" width="360" alt="LightTodo default compact window" />
+<img src="docs/images/v1.2-app-compact.png" width="360" alt="LightTodo default compact window" />
 
 Expanded list, English interface, and preferences:
 
-<img src="docs/images/app-zh.png" width="360" alt="LightTodo expanded task list" /> <img src="docs/images/app-en.png" width="360" alt="LightTodo English interface" /> <img src="docs/images/settings.png" width="360" alt="Preferences: pinning, opacity, launch at login, and data folder" />
+<img src="docs/images/v1.2-app-zh.png" width="360" alt="LightTodo expanded task list" /> <img src="docs/images/v1.2-app-en.png" width="360" alt="LightTodo English interface" /> <img src="docs/images/v1.2-settings.png" width="360" alt="Preferences: pinning, opacity, launch at login, and data folder" />
 
 Task titles are user content and are not translated when switching the interface language.
+
+Glass material example (Lavender):
+
+<img src="docs/images/v1.2-app-glass.png" width="360" alt="Lavender translucent glass material" />
 
 ## Get started without coding
 
@@ -25,7 +29,7 @@ You do not need Node.js, Python, developer tools, or a GitHub account to use the
 ### Install on Windows
 
 1. Open **Download installers** above and find **Assets** on the release page.
-2. Download the `.exe` file, such as `LightTodo-1.1.0-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
+2. Download the `.exe` file, such as `LightTodo-1.2.0-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
 3. Double-click the installer. On **Choose Install Location**, select **Browse** to choose another drive or folder, such as `D:\Apps\LightTodo`, then select **Install**. The setup wizard lets you choose the installation directory. Changing that directory does not move your personal task data.
 4. Open **LightTodo** using its desktop shortcut.
 
@@ -49,6 +53,8 @@ The app opens on **Today**, with Chinese as the default interface language. Sele
 
 Each launch starts with a minimum-size window of approximately **360 × 460**, positioned 16 logical pixels from the top-left of the primary display's usable area. Windows display scaling can slightly affect the outer frame dimensions. You can move and resize the window after launch.
 
+By default, LightTodo stays on the desktop below ordinary app windows. Select the pin icon to keep it above other windows; unpin to return to the desktop. On Windows, desktop mode is hidden from the taskbar and remains visible with Show Desktop. If you minimize it manually, reopen the app icon to restore it.
+
 Select **Add a task** to begin. Data is saved locally by default. To choose another folder, open **Preferences → Change folder**.
 
 The installation directory and the data folder are separate. You do not need to edit the data files manually.
@@ -69,6 +75,9 @@ The installation directory and the data folder are separate. You do not need to 
 | Resize | Drag a window edge or corner; the minimum size is 360 × 460 |
 | Move the window | Drag an empty area of the title bar near the LightTodo name |
 | Scroll | Use a mouse wheel, trackpad, or the scrollbar; the preferences dialog also scrolls |
+| Adjust font size | Preferences → Font size, 12–20 px; scales list and preferences text |
+| Change interface color | Preferences → Interface color: Mint, Blue, Peach, or Lavender; individual task colors remain independent |
+| Glass material | Preferences → Material → Glass; works with every interface color. Select Solid to restore an opaque background |
 | Adjust opacity | Open Preferences and drag **Window opacity**, from 35% to 100% |
 | Switch language | Open Preferences and select **EN** or **中文** |
 | Launch at login | Enable **Launch at login** in Preferences. It is off by default; disabling it removes the startup entry |
@@ -85,7 +94,13 @@ Keyboard shortcuts: **Ctrl+N / ⌘N** adds a task; **Esc** closes a dialog; **Ta
 - Unfinished tasks always appear above completed tasks. You can reorder within either group, but cannot drag across completion states. Overdue dates use a different color rather than a separate forced group.
 - The order is saved globally and reused across date ranges and searches. Reordering filtered results only changes visible tasks; hidden tasks retain their relative positions. Completing a task moves it to the completed group; marking it incomplete restores its position within the unfinished group.
 - The count beside the date shows **completed tasks / total matching tasks**.
-- Restarting returns to **Today** and the compact top-left window. Language, pinning, and opacity preferences are remembered.
+- Restarting returns to **Today** and the compact top-left window. Language, pinning, opacity, font size, color, and material preferences are remembered.
+
+### Desktop widget and glass material
+
+In desktop mode, the list stays below ordinary app windows and remains editable, movable, and resizable. Pin it to display above other applications. Closing the app exits it; enable Launch at login to open it automatically when signing in. The macOS desktop widget can appear across workspaces.
+
+Glass uses native Vibrancy on macOS and Acrylic on Windows 11 22H2 or later. System version, desktop-layer composition, Reduce Transparency accessibility settings, and remote desktop sessions can affect background blur. When native blur is unavailable, the app retains a translucent tinted glass background. Glass keeps text separate from the background transparency; Window opacity affects the entire window, so start with 100% when using Glass.
 
 ### About launch at login
 

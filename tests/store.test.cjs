@@ -36,8 +36,26 @@ test('validation rejects malformed files, duplicate ids and impossible dates', (
     opacity: 1,
     alwaysOnTop: false,
     autoStart: false,
+    fontSize: 13,
+    theme: 'mint',
+    appearance: 'solid',
   });
   assert.equal(cleanSettings({ opacity: 0 }).opacity, 0.35);
+});
+test('appearance preferences migrate old settings and clamp untrusted values', () => {
+  assert.equal(cleanSettings({ fontSize: Infinity }).fontSize, 13);
+  assert.equal(cleanSettings({ fontSize: 100 }).fontSize, 20);
+  assert.equal(cleanSettings({ fontSize: 0 }).fontSize, 12);
+  assert.equal(cleanSettings({ theme: 'arbitrary', appearance: '<script>' }).theme, 'mint');
+  assert.deepEqual(cleanSettings({ fontSize: 17, theme: 'lavender', appearance: 'glass' }), {
+    language: 'zh',
+    alwaysOnTop: false,
+    autoStart: false,
+    opacity: 1,
+    fontSize: 17,
+    theme: 'lavender',
+    appearance: 'glass',
+  });
 });
 test('atomic save in Chinese path, backup recovery and original preservation', async () => {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'lighttodo-中文-'));

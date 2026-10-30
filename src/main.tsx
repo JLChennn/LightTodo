@@ -61,6 +61,11 @@ const copy = {
     language: '界面语言',
     opacity: '窗口不透明度',
     opacityHint: '向左拖动，让窗口更轻透',
+    fontSize: '字号大小',
+    theme: '界面配色',
+    appearance: '界面材质',
+    solid: '纯色',
+    glass: '透明玻璃',
     storage: '本地数据',
     folder: '更换文件夹',
     openFolder: '打开文件夹',
@@ -119,6 +124,11 @@ const copy = {
     language: 'Language',
     opacity: 'Window opacity',
     opacityHint: 'Slide left for a lighter window',
+    fontSize: 'Font size',
+    theme: 'Interface color',
+    appearance: 'Material',
+    solid: 'Solid',
+    glass: 'Glass',
     storage: 'Local data',
     folder: 'Change folder',
     openFolder: 'Open folder',
@@ -155,6 +165,9 @@ function App() {
     alwaysOnTop: false,
     opacity: 1,
     autoStart: false,
+    fontSize: 13,
+    theme: 'mint',
+    appearance: 'solid',
   });
   const [period, setPeriod] = useState<Period>('today');
   const [query, setQuery] = useState('');
@@ -193,6 +206,12 @@ function App() {
   useEffect(() => {
     document.documentElement.lang = zh ? 'zh-CN' : 'en';
   }, [zh]);
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.fontSize = `${settings.fontSize}px`;
+    root.dataset.theme = settings.theme;
+    root.dataset.appearance = settings.appearance;
+  }, [settings.fontSize, settings.theme, settings.appearance]);
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 30000);
     return () => clearInterval(timer);
@@ -473,7 +492,6 @@ function App() {
               <Check size={15} strokeWidth={3} />
             </span>
             LightTodo
-            <span className="brand-dot" />
           </div>
           <div className="window-controls">
             <button
@@ -656,6 +674,54 @@ function App() {
       )}
       {panel && (
         <Modal title={t.settings} close={() => setPanel(false)} closeLabel={t.close}>
+          <div className="appearance-settings">
+            <div className="settings-row">
+              <span>{t.appearance}</span>
+              <div className="language-control" role="group" aria-label={t.appearance}>
+                {(['solid', 'glass'] as const).map((appearance) => (
+                  <button
+                    key={appearance}
+                    aria-pressed={settings.appearance === appearance}
+                    className={settings.appearance === appearance ? 'active' : ''}
+                    onClick={() => updateSettings({ appearance })}
+                  >
+                    {t[appearance]}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="settings-row theme-row">
+              <span>{t.theme}</span>
+              <div className="palette" role="group" aria-label={t.theme}>
+                {colors.map((theme) => (
+                  <button
+                    key={theme}
+                    className={`swatch ${theme} ${settings.theme === theme ? 'chosen' : ''}`}
+                    aria-label={t.palette[theme]}
+                    aria-pressed={settings.theme === theme}
+                    onClick={() => updateSettings({ theme })}
+                  >
+                    {settings.theme === theme && <Check size={14} />}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="opacity-settings font-settings">
+              <label htmlFor="font-size">
+                {t.fontSize}
+                <strong>{settings.fontSize} px</strong>
+              </label>
+              <input
+                id="font-size"
+                type="range"
+                min="12"
+                max="20"
+                step="1"
+                value={settings.fontSize}
+                onChange={(e) => updateSettings({ fontSize: Number(e.target.value) })}
+              />
+            </div>
+          </div>
           <div className="settings-row">
             <span>{t.language}</span>
             <div className="language-control">

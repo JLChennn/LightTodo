@@ -1,7 +1,7 @@
 {
   "name": "lighttodo",
   "productName": "LightTodo",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A minimal, local-first desktop todo list.",
   "author": "JLChennn",
   "license": "MIT",
@@ -16,10 +16,11 @@
     "test": "node --test tests/*.test.cjs",
     "test:e2e": "npm run build && playwright test",
     "dist:win": "npm run build && electron-builder --win nsis --x64 --publish never",
-    "dist:mac": "npm run build && electron-builder --mac dmg --universal --publish never",
+    "dist:mac": "node scripts/prepare-mac.cjs && npm run build && electron-builder --mac dmg --universal --publish never",
     "format": "prettier --write src electron tests *.json *.ts *.cjs .github/workflows/*.yml"
   },
   "dependencies": {
+    "koffi": "^3.3.5",
     "lucide-react": "^0.468.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
@@ -74,10 +75,16 @@
       "category": "public.app-category.productivity",
       "icon": "build/icon.png",
       "identity": "-",
-      "hardenedRuntime": false
+      "hardenedRuntime": false,
+      "x64ArchFiles": "**/node_modules/@koromix/koffi-darwin-*/**",
+      "singleArchFiles": "**/node_modules/@koromix/koffi-darwin-*/**"
     },
     "dmg": {
       "title": "LightTodo"
-    }
+    },
+    "npmRebuild": false,
+    "asarUnpack": [
+      "node_modules/@koromix/**"
+    ]
   }
 }

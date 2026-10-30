@@ -6,7 +6,7 @@ const fs = require('node:fs/promises');
   const executablePath =
     process.argv[2] ||
     path.join(process.env.LOCALAPPDATA, 'Programs', 'LightTodo', 'LightTodo.exe');
-  const env = { ...process.env };
+  const env = { ...process.env, LIGHTTODO_TEST_HOME: path.resolve('.test-data/packaged-smoke') };
   delete env.ELECTRON_RUN_AS_NODE;
   const desktop = await electron.launch({ executablePath, args: [], env });
   try {
