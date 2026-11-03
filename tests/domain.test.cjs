@@ -21,7 +21,7 @@ test('month/year ranges handle leap year and December', async () => {
   assert.deepEqual(periodRange('month', new Date(2026, 11, 31)), ['2026-12-01', '2026-12-31']);
   assert.deepEqual(periodRange('year', new Date(2026, 11, 31)), ['2026-01-01', '2026-12-31']);
 });
-test('today includes unfinished overdue; completed tasks follow all pending', async () => {
+test('legacy tasks stay in Today regardless of dates; completion stays last', async () => {
   const { selectTodos } = await domain;
   const rows = [
     todo('done', '2026-10-28', true),
@@ -32,12 +32,15 @@ test('today includes unfinished overdue; completed tasks follow all pending', as
   ];
   assert.deepEqual(
     selectTodos(rows, 'today', '', new Date(2026, 9, 28)).map((x) => x.id),
-    ['old', 'now', 'done'],
+    ['future', 'old', 'now', 'done', 'old-done'],
   );
 });
 test('search matches titles/notes case-insensitively and stays within period', async () => {
   const { selectTodos } = await domain;
-  const rows = [todo('a', '2026-10-28', false, 'Hello'), todo('b', '2026-11-28', false, 'Hello')];
+  const rows = [
+    { ...todo('a', '2026-10-28', false, 'Hello'), list: 'month' },
+    { ...todo('b', '2026-11-28', false, 'Hello'), list: 'year' },
+  ];
   assert.equal(selectTodos(rows, 'month', ' HELLO ', new Date(2026, 9, 28)).length, 1);
   assert.equal(selectTodos(rows, 'month', '备注', new Date(2026, 9, 28)).length, 1);
   assert.equal(selectTodos(rows, 'month', 'missing', new Date(2026, 9, 28)).length, 0);
@@ -46,7 +49,7 @@ test('manual order survives filters and complete/undo; hidden slots are unchange
   const { selectTodos, reorderTodos } = await domain;
   const rows = [
     todo('a', '2026-10-28'),
-    todo('hidden', '2026-11-01'),
+    { ...todo('hidden', '2026-11-01'), list: 'week' },
     todo('b', '2026-10-27'),
     todo('c', '2026-10-28'),
     todo('done', '2026-10-28', true),

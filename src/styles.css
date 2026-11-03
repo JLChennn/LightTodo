@@ -938,3 +938,111 @@ svg {
 .task-notes {
   max-height: 4.5em;
 }
+
+/* Liquid Glass inspired navigation and grouped surfaces. */
+:root {
+  --text: #24332d;
+  --muted: #66766c;
+}
+.app-shell {
+  background: radial-gradient(ellipse at 0 0, #ffffffc9, transparent 65%), var(--surface);
+}
+.titlebar {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.brand {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.brand-icon {
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 #ffffffaa;
+}
+.period-nav {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  background: color-mix(in srgb, var(--control) 65%, #ffffff50);
+  border: 1px solid #ffffffb8;
+  border-radius: 22px;
+  box-shadow:
+    0 4px 18px #273b3110,
+    inset 0 1px 0 #fff;
+  backdrop-filter: blur(24px) saturate(160%);
+  padding: 5px;
+  gap: 2px;
+}
+.period-nav button {
+  border-radius: 17px;
+  font-size: 0.86rem;
+  padding: 9px 1px;
+}
+.period-nav button.active {
+  box-shadow:
+    0 2px 8px #273b3116,
+    inset 0 1px 0 #fff;
+  color: var(--accent-ink);
+}
+.task {
+  border-radius: 18px;
+  border: 1px solid #ffffffb0;
+  box-shadow: 0 2px 8px #25382d05;
+  padding: 13px 10px;
+}
+.task-title {
+  font-size: 1rem;
+  font-weight: 550;
+  color: var(--text);
+}
+.task-notes {
+  color: var(--muted);
+}
+.checkbox {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+}
+.add-button {
+  border-radius: 20px;
+  padding: 9px 12px;
+}
+.modal {
+  border-radius: 26px;
+  box-shadow:
+    0 24px 80px #14271c28,
+    inset 0 1px 0 white;
+}
+.modal-backdrop {
+  backdrop-filter: blur(12px) saturate(120%);
+  background: #29352c24;
+}
+.language-control,
+.primary,
+.secondary {
+  border-radius: 16px;
+}
+:root[data-appearance='glass'] .app-shell {
+  background: linear-gradient(145deg, #ffffff70, #ffffff18), var(--glass-tint);
+}
+.memo-checkbox,
+.memo-date {
+  display: none !important;
+}
+.memo-body {
+  max-height: none;
+  white-space: pre-wrap;
+  font-size: 0.94rem;
+  line-height: 1.75;
+}
+[data-list='memo'] .task {
+  min-height: 120px;
+  background: color-mix(in srgb, var(--accent-soft) 45%, #fff8);
+}
+[data-list='memo'] .task-title {
+  font-size: 1.12rem;
+}
+[data-list='memo'] .task-content {
+  gap: 12px;
+}
+[data-list='memo'] .task-actions {
+  grid-template-columns: repeat(2, 21px);
+}

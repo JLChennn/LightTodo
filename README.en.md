@@ -29,7 +29,7 @@ You do not need Node.js, Python, developer tools, or a GitHub account to use the
 ### Install on Windows
 
 1. Open **Download installers** above and find **Assets** on the release page.
-2. Download the `.exe` file, such as `LightTodo-1.2.1-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
+2. Download the `.exe` file, such as `LightTodo-1.3.0-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
 3. Double-click the installer. On **Choose Install Location**, select **Browse** to choose another drive or folder, such as `D:\Apps\LightTodo`, then select **Install**. The setup wizard lets you choose the installation directory. Changing that directory does not move your personal task data.
 4. Open **LightTodo** using its desktop shortcut.
 
@@ -69,8 +69,8 @@ The installation directory and the data folder are separate. You do not need to 
 | Mark a task incomplete | Select its checked checkbox again |
 | Delete a task | Hover over the card, select the trash icon, and confirm |
 | Reorder tasks | Drag the grip handle on the left, or hover over a card and use the up/down arrows; the order is saved automatically |
-| Search | Search titles or notes within the current date range; switch to **Year** to search the current year |
-| Switch date range | Use **Today / Week / Month / Year** at the top |
+| Search | Search titles or notes only within the current independent list |
+| Switch list | Use **Today / Week / Month / Year** at the top |
 | Keep the window on top | Select the pin icon; select it again to unpin. System security screens and some fullscreen windows may still cover it |
 | Resize | Drag a window edge or corner; the minimum size is 360 × 460 |
 | Move the window | Drag an empty area of the title bar near the LightTodo name |
@@ -84,17 +84,15 @@ The installation directory and the data folder are separate. You do not need to 
 
 Keyboard shortcuts: **Ctrl+N / ⌘N** adds a task; **Esc** closes a dialog; **Tab / Shift+Tab** moves between controls.
 
-### How date ranges and ordering work
+### Independent lists and notes
 
-- Each task has a planned date, defaulting to today. You can select a past or future date.
-- **Today** includes today's tasks and all unfinished overdue tasks.
-- **Week** runs from Monday through Sunday, including weeks that cross month or year boundaries.
-- **Month / Year** use the current calendar month or year according to your computer's date.
-- Overdue tasks keep their original planned dates. Once completed, they appear in the range containing that date. Tasks from previous years remain in the local JSON file; this version has no navigation for historical years.
-- Unfinished tasks always appear above completed tasks. You can reorder within either group, but cannot drag across completion states. Overdue dates use a different color rather than a separate forced group.
-- The order is saved globally and reused across date ranges and searches. Reordering filtered results only changes visible tasks; hidden tasks retain their relative positions. Completing a task moves it to the completed group; marking it incomplete restores its position within the unfinished group.
-- The count beside the date shows **completed tasks / total matching tasks**.
-- Restarting returns to **Today** and the compact top-left window. Language, pinning, opacity, font size, color, and material preferences are remembered.
+Today, Week, Month and Year are four independent lists rather than date filters. Tasks belong only to the list where they were created. Editing, completion, deletion and sorting never change another list. Dates are metadata; they do not move or hide tasks. Lists are not cleared automatically.
+
+Existing shared tasks remain intact in Today; the other lists start empty. Export a backup before upgrading. Do not open the same data folder with an older version afterward: older versions cannot preserve list membership.
+
+The Notes tab supports titles, multiline text, search, editing, deletion and manual ordering, without completion checkboxes. Notes are included in local saves, exports and restores. The interface uses floating pill navigation, translucent materials and rounded cards inspired by iOS 26 Liquid Glass. This remains a Windows/macOS desktop app, not a native UIKit app.
+
+<img src="docs/images/notes-v1.3.png" width="360" alt="Notes interface" />
 
 ### Pinning and glass material
 

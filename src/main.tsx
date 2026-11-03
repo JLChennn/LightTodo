@@ -27,6 +27,7 @@ import './styles.css';
 
 const copy = {
   zh: {
+    memo: '便签',
     today: '今日',
     week: '本周',
     month: '本月',
@@ -90,6 +91,7 @@ const copy = {
     palette: { mint: '薄荷绿', blue: '雾蓝', peach: '奶杏', lavender: '淡紫' },
   },
   en: {
+    memo: 'Notes',
     today: 'Today',
     week: 'Week',
     month: 'Month',
@@ -294,6 +296,8 @@ function App() {
       setBusy(false);
     }
   }
+  const activeList = useRef<Period>(period);
+  activeList.current = period;
   function openEditor(task?: Todo) {
     setEditor({
       task,
@@ -307,6 +311,7 @@ function App() {
     e.preventDefault();
     if (!editor || !editor.title.trim()) return;
     const task: Todo = {
+      list: editor.task?.list || activeList.current,
       id: editor.task?.id || crypto.randomUUID(),
       title: editor.title.trim(),
       notes: editor.notes.trim(),
@@ -390,7 +395,7 @@ function App() {
           <GripVertical size={13} />
         </button>
         <button
-          className="checkbox"
+          className={`checkbox ${period === 'memo' ? 'memo-checkbox' : ''}`}
           aria-label={task.done ? t.markUndone : t.markDone}
           aria-pressed={task.done}
           onClick={() =>
@@ -405,9 +410,13 @@ function App() {
           aria-label={`${t.edit}: ${task.title}`}
         >
           <span className="task-title">{task.title}</span>
-          {task.notes && <span className="task-notes">{task.notes}</span>}
+          {task.notes && (
+            <span className={`task-notes ${period === 'memo' ? 'memo-body' : ''}`}>
+              {task.notes}
+            </span>
+          )}
           <span
-            className={`task-date ${!task.done && task.date < dateKey(now) ? 'overdue-date' : ''}`}
+            className={`task-date ${period === 'memo' ? 'memo-date' : ''} ${!task.done && task.date < dateKey(now) ? 'overdue-date' : ''}`}
           >
             <CalendarDays size={11} />
             {task.date}
@@ -484,7 +493,7 @@ function App() {
       </div>
     );
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-list={period}>
       <div className="main-surface" inert={modalOpen || undefined}>
         <header className="titlebar">
           <div className="brand">
@@ -534,7 +543,7 @@ function App() {
           </div>
         </header>
         <nav className="period-nav" aria-label={zh ? '时间范围' : 'Time range'}>
-          {(['today', 'week', 'month', 'year'] as Period[]).map((p) => (
+          {(['today', 'week', 'month', 'year', 'memo'] as Period[]).map((p) => (
             <button
               key={p}
               className={period === p ? 'active' : ''}
@@ -551,9 +560,7 @@ function App() {
         <main className="scroll-area">
           <div className="list-summary">
             <span>{dateLabel}</span>
-            <span>
-              {done.length} / {visible.length}
-            </span>
+            <span>{period === 'memo' ? visible.length : `${done.length} / ${visible.length}`}</span>
           </div>
           <div className="list-toolbar">
             <label className="search">
@@ -576,18 +583,20 @@ function App() {
             </label>
             <button className="add-button" onClick={() => openEditor()}>
               <Plus size={16} />
-              <span>{t.add}</span>
+              <span>{period === 'memo' ? (zh ? '新建便签' : 'New note') : t.add}</span>
             </button>
           </div>
-          {section(t.pending, pending)}
+          {section(period === 'memo' ? t.memo : t.pending, pending)}
           {section(t.completed, done, 'completed-group')}
           {visible.length === 0 && (
             <div className="empty-state">
-              <h2>{query ? t.noResults : t.empty}</h2>
+              <h2>
+                {query ? t.noResults : period === 'memo' ? (zh ? '暂无便签' : 'No notes') : t.empty}
+              </h2>
               {query && <p>{t.noResultsSub}</p>}
               {!query && (
                 <button className="text-button" onClick={() => openEditor()}>
-                  {t.add}
+                  {period === 'memo' ? (zh ? '新建便签' : 'New note') : t.add}
                   <ArrowUpRight size={14} />
                 </button>
               )}
@@ -609,30 +618,30 @@ function App() {
       </div>
       {editor && (
         <Modal
-          title={editor.task ? t.editTask : t.newTask}
+          title={period === 'memo' ? t.memo : editor.task ? t.editTask : t.newTask}
           close={() => setEditor(null)}
           closeLabel={t.close}
         >
           <form onSubmit={submit}>
             <input
               className="title-input"
-              aria-label={t.taskTitle}
+              aria-label={period === 'memo' ? (zh ? '便签标题' : 'Note title') : t.taskTitle}
               autoFocus
-              placeholder={t.taskTitle}
+              placeholder={period === 'memo' ? (zh ? '便签标题' : 'Note title') : t.taskTitle}
               value={editor.title}
               maxLength={200}
               required
               onChange={(e) => setEditor({ ...editor, title: e.target.value })}
             />
             <textarea
-              aria-label={t.notes}
-              placeholder={t.notes}
+              aria-label={period === 'memo' ? (zh ? '便签正文' : 'Note body') : t.notes}
+              placeholder={period === 'memo' ? (zh ? '写点什么…' : 'Write something…') : t.notes}
               value={editor.notes}
               maxLength={5000}
               rows={4}
               onChange={(e) => setEditor({ ...editor, notes: e.target.value })}
             />
-            <label className="field-label">
+            <label className={`field-label ${period === 'memo' ? 'memo-date' : ''}`}>
               {t.date}
               <input
                 type="date"

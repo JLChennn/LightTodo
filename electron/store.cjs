@@ -18,6 +18,7 @@ function validateData(data) {
   const todos = data.todos.map((t) => {
     if (
       !t ||
+      (t.list !== undefined && !['today', 'week', 'month', 'year', 'memo'].includes(t.list)) ||
       typeof t.id !== 'string' ||
       t.id.length > 100 ||
       ids.has(t.id) ||
@@ -35,6 +36,7 @@ function validateData(data) {
       throw new Error('Invalid todo / 待办数据格式错误');
     ids.add(t.id);
     return {
+      ...(t.list !== undefined ? { list: t.list } : {}),
       id: t.id,
       title: t.title.trim(),
       notes: t.notes,

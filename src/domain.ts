@@ -1,6 +1,7 @@
-export type Period = 'today' | 'week' | 'month' | 'year';
+export type Period = 'today' | 'week' | 'month' | 'year' | 'memo';
 export type Color = 'mint' | 'blue' | 'peach' | 'lavender';
 export interface Todo {
+  list?: Period;
   id: string;
   title: string;
   notes: string;
@@ -58,13 +59,11 @@ export function selectTodos(
   query: string,
   now = new Date(),
 ): Todo[] {
-  const [start, end] = periodRange(period, now),
-    today = dateKey(now),
-    q = query.trim().toLocaleLowerCase();
+  const q = query.trim().toLocaleLowerCase();
   return todos
     .filter(
       (t) =>
-        ((t.date >= start && t.date <= end) || (period === 'today' && !t.done && t.date < today)) &&
+        (t.list || 'today') === period &&
         (!q || `${t.title}\n${t.notes}`.toLocaleLowerCase().includes(q)),
     )
     .sort((a, b) => Number(a.done) - Number(b.done));
@@ -79,7 +78,14 @@ export function reorderTodos(
 ): Todo[] {
   const source = todos.find((t) => t.id === sourceId),
     target = todos.find((t) => t.id === targetId);
-  if (!source || !target || source.done !== target.done || sourceId === targetId) return todos;
+  if (
+    !source ||
+    !target ||
+    source.done !== target.done ||
+    (source.list || 'today') !== (target.list || 'today') ||
+    sourceId === targetId
+  )
+    return todos;
   const allowed = new Set(visibleIds);
   const group = todos.filter((t) => allowed.has(t.id) && t.done === source.done);
   const from = group.findIndex((t) => t.id === sourceId),
