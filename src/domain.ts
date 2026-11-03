@@ -7,7 +7,7 @@ export interface Todo {
   notes: string;
   date: string;
   done: boolean;
-  color: Color;
+  color?: Color; // Legacy backup metadata; never used for presentation.
   createdAt: string;
 }
 export interface Data {
@@ -20,8 +20,6 @@ export interface Settings {
   opacity: number;
   autoStart: boolean;
   fontSize: number;
-  theme: Color;
-  appearance: 'solid' | 'glass';
 }
 export interface Snapshot {
   data: Data;

@@ -22,7 +22,7 @@ import {
   Power,
 } from 'lucide-react';
 import { dateKey, selectTodos, reorderTodos } from './domain';
-import type { Color, Period, Settings, Snapshot, Todo } from './domain';
+import type { Period, Settings, Snapshot, Todo } from './domain';
 import './styles.css';
 
 const copy = {
@@ -51,7 +51,6 @@ const copy = {
     taskTitle: '待办标题',
     notes: '备注（选填）',
     date: '计划日期',
-    color: '卡片颜色',
     cancel: '取消',
     save: '保存',
     create: '加入清单',
@@ -63,10 +62,6 @@ const copy = {
     opacity: '窗口不透明度',
     opacityHint: '向左拖动，让窗口更轻透',
     fontSize: '字号大小',
-    theme: '界面配色',
-    appearance: '界面材质',
-    solid: '纯色',
-    glass: '透明玻璃',
     storage: '本地数据',
     folder: '更换文件夹',
     openFolder: '打开文件夹',
@@ -88,7 +83,6 @@ const copy = {
     moveUp: '上移',
     moveDown: '下移',
     drag: '拖动排序',
-    palette: { mint: '薄荷绿', blue: '雾蓝', peach: '奶杏', lavender: '淡紫' },
   },
   en: {
     memo: 'Notes',
@@ -115,7 +109,6 @@ const copy = {
     taskTitle: 'Task title',
     notes: 'Notes (optional)',
     date: 'Planned date',
-    color: 'Card color',
     cancel: 'Cancel',
     save: 'Save',
     create: 'Add to list',
@@ -127,10 +120,6 @@ const copy = {
     opacity: 'Window opacity',
     opacityHint: 'Slide left for a lighter window',
     fontSize: 'Font size',
-    theme: 'Interface color',
-    appearance: 'Material',
-    solid: 'Solid',
-    glass: 'Glass',
     storage: 'Local data',
     folder: 'Change folder',
     openFolder: 'Open folder',
@@ -152,11 +141,9 @@ const copy = {
     moveUp: 'Move up',
     moveDown: 'Move down',
     drag: 'Drag to reorder',
-    palette: { mint: 'Mint', blue: 'Blue', peach: 'Peach', lavender: 'Lavender' },
   },
 };
-const colors: Color[] = ['mint', 'blue', 'peach', 'lavender'];
-type Editor = { task?: Todo; title: string; notes: string; date: string; color: Color };
+type Editor = { task?: Todo; title: string; notes: string; date: string };
 
 function App() {
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
@@ -168,8 +155,6 @@ function App() {
     opacity: 1,
     autoStart: false,
     fontSize: 13,
-    theme: 'mint',
-    appearance: 'solid',
   });
   const [period, setPeriod] = useState<Period>('today');
   const [query, setQuery] = useState('');
@@ -211,9 +196,7 @@ function App() {
   useEffect(() => {
     const root = document.documentElement;
     root.style.fontSize = `${settings.fontSize}px`;
-    root.dataset.theme = settings.theme;
-    root.dataset.appearance = settings.appearance;
-  }, [settings.fontSize, settings.theme, settings.appearance]);
+  }, [settings.fontSize]);
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 30000);
     return () => clearInterval(timer);
@@ -304,7 +287,6 @@ function App() {
       title: task?.title || '',
       notes: task?.notes || '',
       date: task?.date || dateKey(),
-      color: task?.color || 'mint',
     });
   }
   function submit(e: React.FormEvent) {
@@ -316,7 +298,6 @@ function App() {
       title: editor.title.trim(),
       notes: editor.notes.trim(),
       date: editor.date,
-      color: editor.color,
       done: editor.task?.done || false,
       createdAt: editor.task?.createdAt || new Date().toISOString(),
     };
@@ -350,7 +331,7 @@ function App() {
     return (
       <article
         key={task.id}
-        className={`task ${task.color} ${task.done ? 'is-done' : ''}`}
+        className={`task ${task.done ? 'is-done' : ''}`}
         data-testid="task"
         data-id={task.id}
         onDragOver={(e) => {
@@ -653,22 +634,6 @@ function App() {
                 onChange={(e) => setEditor({ ...editor, date: e.target.value })}
               />
             </label>
-            <label className="field-label">{t.color}</label>
-            <div className="palette">
-              {colors.map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  className={`swatch ${c} ${editor.color === c ? 'chosen' : ''}`}
-                  title={t.palette[c]}
-                  aria-label={t.palette[c]}
-                  aria-pressed={editor.color === c}
-                  onClick={() => setEditor({ ...editor, color: c })}
-                >
-                  {editor.color === c && <Check size={16} />}
-                </button>
-              ))}
-            </div>
             <div className="modal-actions">
               <button type="button" className="secondary" onClick={() => setEditor(null)}>
                 {t.cancel}
@@ -684,37 +649,6 @@ function App() {
       {panel && (
         <Modal title={t.settings} close={() => setPanel(false)} closeLabel={t.close}>
           <div className="appearance-settings">
-            <div className="settings-row">
-              <span>{t.appearance}</span>
-              <div className="language-control" role="group" aria-label={t.appearance}>
-                {(['solid', 'glass'] as const).map((appearance) => (
-                  <button
-                    key={appearance}
-                    aria-pressed={settings.appearance === appearance}
-                    className={settings.appearance === appearance ? 'active' : ''}
-                    onClick={() => updateSettings({ appearance })}
-                  >
-                    {t[appearance]}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="settings-row theme-row">
-              <span>{t.theme}</span>
-              <div className="palette" role="group" aria-label={t.theme}>
-                {colors.map((theme) => (
-                  <button
-                    key={theme}
-                    className={`swatch ${theme} ${settings.theme === theme ? 'chosen' : ''}`}
-                    aria-label={t.palette[theme]}
-                    aria-pressed={settings.theme === theme}
-                    onClick={() => updateSettings({ theme })}
-                  >
-                    {settings.theme === theme && <Check size={14} />}
-                  </button>
-                ))}
-              </div>
-            </div>
             <div className="opacity-settings font-settings">
               <label htmlFor="font-size">
                 {t.fontSize}

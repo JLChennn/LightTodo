@@ -55,14 +55,9 @@ test('ordinary window pinning, appearance controls, large text and restart persi
         ),
       ).toBe(false);
     await page.getByRole('button', { name: '偏好设置', exact: true }).click();
-    await page
-      .getByRole('group', { name: '界面配色' })
-      .getByRole('button', { name: '淡紫' })
-      .click();
-    await page.getByRole('button', { name: '透明玻璃', exact: true }).click();
+    await expect(page.getByRole('group', { name: '界面配色' })).toHaveCount(0);
+    await expect(page.locator('.swatch')).toHaveCount(0);
     await page.locator('#font-size').fill('20');
-    await expect(page.locator('html')).toHaveAttribute('data-appearance', 'glass');
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'lavender');
     expect(await page.locator('html').evaluate((el) => getComputedStyle(el).fontSize)).toBe('20px');
     await page.getByRole('button', { name: 'EN', exact: true }).click();
     await expect(page.getByRole('dialog', { name: 'Preferences' })).toBeVisible();
@@ -108,8 +103,6 @@ test('ordinary window pinning, appearance controls, large text and restart persi
       .toBe(20);
     await app.close();
     page = await launch();
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'lavender');
-    await expect(page.locator('html')).toHaveAttribute('data-appearance', 'glass');
     expect(
       await page.locator('.task-title').evaluate((el) => parseFloat(getComputedStyle(el).fontSize)),
     ).toBeGreaterThan(18);
@@ -129,14 +122,9 @@ test('ordinary window pinning, appearance controls, large text and restart persi
     await page.screenshot({ animations: 'disabled', path: 'test-results/app-glass.png' });
     await page.getByRole('button', { name: '偏好设置', exact: true }).click();
     await page.getByRole('button', { name: 'EN', exact: true }).click();
-    await page.getByRole('button', { name: 'Solid', exact: true }).click();
-    await page
-      .getByRole('group', { name: 'Interface color' })
-      .getByRole('button', { name: 'Blue' })
-      .click();
-    await expect(page.locator('html')).toHaveAttribute('data-appearance', 'solid');
+    await expect(page.getByRole('group', { name: 'Interface color' })).toHaveCount(0);
     await page.keyboard.press('Escape');
-    await page.screenshot({ animations: 'disabled', path: 'test-results/large-blue.png' });
+    await page.screenshot({ animations: 'disabled', path: 'test-results/large-neutral.png' });
   } finally {
     await app?.close();
   }

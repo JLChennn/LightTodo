@@ -2,7 +2,7 @@
 
 **简体中文** | [English](README.en.md)
 
-极简桌面待办清单。马卡龙配色、本地存储，支持 Windows 和 macOS。
+极简玻璃质感的桌面待办与便签。本地存储，支持 Windows 和 macOS。
 
 [下载安装包](https://github.com/JLChennn/LightTodo/releases/latest) · [反馈问题](https://github.com/JLChennn/LightTodo/issues) · [验证记录](docs/VERIFICATION.md) · [MIT 许可证](LICENSE)
 
@@ -10,15 +10,11 @@
 
 默认紧凑界面（360 × 460，主屏幕左上角）：
 
-<img src="docs/images/compact-v1.3.png" width="360" alt="LightTodo 默认紧凑界面" />
+<img src="docs/images/compact-v1.4.png" width="360" alt="LightTodo 默认紧凑界面" />
 
 展开后的清单与设置面板：
 
-<img src="docs/images/tasks-v1.3.png" width="360" alt="LightTodo 清单" /> <img src="docs/images/settings-v1.3.png" width="360" alt="LightTodo 设置：置顶、透明度、自启动和数据目录" />
-
-玻璃材质示例（淡紫）：
-
-<img src="docs/images/v1.2-app-glass.png" width="360" alt="淡紫透明玻璃材质" />
+<img src="docs/images/tasks-v1.4.png" width="360" alt="LightTodo 清单" /> <img src="docs/images/settings-v1.4.png" width="360" alt="LightTodo 设置：字号、置顶、透明度与本地数据" />
 
 ## 我只想使用，不会编程
 
@@ -27,7 +23,7 @@
 ### Windows 安装
 
 1. 打开上面的「下载安装包」链接，找到版本页面的 **Assets（资源）**。
-2. 下载以 `.exe` 结尾的文件，例如 `LightTodo-1.3.0-win-x64.exe`。不要下载 `Source code`，那是给开发者看的源码。
+2. 下载以 `.exe` 结尾的文件，例如 `LightTodo-1.4.0-win-x64.exe`。不要下载 `Source code`，那是给开发者看的源码。
 3. 双击安装包，在「选择安装位置」页面点「浏览」，可以选择其他磁盘或文件夹（例如 `D:\Apps\LightTodo`），再点「安装」。安装采用向导模式，不会跳过路径选择。更改安装目录不会移动个人清单数据。
 4. 双击桌面上的 **LightTodo** 图标，就可以开始使用。
 
@@ -59,7 +55,7 @@ macOS 使用 `.dmg`，不使用 `.exe`。提供 Universal 安装包，同时包�
 
 | 想做的事 | 操作 |
 | --- | --- |
-| 新增待办 | 点「＋ 添加待办」，输入标题，按需填写备注、日期和卡片颜色，再点「加入清单」 |
+| 新增待办 | 点「＋ 添加待办」，输入标题，按需填写备注和日期，再点「加入清单」 |
 | 修改待办 | 点任务文字，或将鼠标移到卡片上后点铅笔图标 |
 | 完成待办 | 点左边方框；任务变灰、加删除线，并移到未完成任务下面 |
 | 恢复为未完成 | 再点一次已勾选的方框 |
@@ -72,8 +68,6 @@ macOS 使用 `.dmg`，不使用 `.exe`。提供 Universal 安装包，同时包�
 | 移动窗口 | 拖动顶部 LightTodo 标题附近的空白处 |
 | 上下滚动 | 鼠标滚轮、触控板或右侧滚动条；设置弹窗也可滚动 |
 | 调整字号 | 设置 → 字号大小，12–20 px，清单和设置文字同步调整 |
-| 更换界面配色 | 设置 → 界面配色，选择薄荷绿、雾蓝、奶杏或淡紫；不改变每条待办自己的卡片颜色 |
-| 透明玻璃效果 | 设置 → 界面材质 → 透明玻璃；可搭配任意配色，切回「纯色」恢复实体背景 |
 | 调整透明度 | 点右上角设置图标，拖动「窗口不透明度」，范围为 35%–100% |
 | 改为英文 | 设置 → 界面语言 → EN；点「中文」切回 |
 | 开机自启动 | 设置 → 开机自启动。默认关闭，开启后在当前用户登录系统时打开；关闭即可移除启动项 |
@@ -88,13 +82,13 @@ macOS 使用 `.dmg`，不使用 `.exe`。提供 Universal 安装包，同时包�
 
 顶部「便签」可创建标题和多行正文，支持搜索、编辑、删除及排序，不显示完成复选框。便签与全部清单一起自动保存、导出和恢复。界面采用受 iOS 26 Liquid Glass 启发的浮动胶囊导航、半透明材质和圆角卡片；这是 Windows/macOS 桌面应用，不是 UIKit 原生应用。
 
-<img src="docs/images/notes-v1.3.png" width="360" alt="便签界面" />
+<img src="docs/images/notes-v1.4.png" width="360" alt="便签界面" />
 
 ### 关于置顶与玻璃效果
 
 开启图钉后，清单显示在其他应用前方；取消后恢复普通窗口，可以通过任务栏或程序坞切换。置顶偏好会保存，重启后沿用。关闭应用会退出，勾选「开机自启动」后可在登录时自动打开。
 
-玻璃模式使用 macOS 原生 Vibrancy，Windows 11 22H2 及以上使用 Acrylic。系统版本、辅助功能中的「减少透明度」及远程桌面可能影响背景模糊；系统无法提供模糊时保留透明染色玻璃背景。文字清晰度与玻璃背景分开处理；「窗口不透明度」仍会影响整个窗口，建议玻璃模式先保持 100%。
+界面统一采用中性玻璃设计，不提供界面选色、卡片选色或材质切换。macOS 使用原生 Vibrancy，Windows 11 22H2 及以上使用 Acrylic。系统版本、辅助功能中的「减少透明度」及远程桌面可能影响背景模糊；系统无法提供模糊时保留透明染色玻璃背景。文字清晰度与玻璃背景分开处理；「窗口不透明度」影响整个窗口，建议先保持 100%。
 
 ### 关于开机自启动
 

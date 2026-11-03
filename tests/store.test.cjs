@@ -37,8 +37,6 @@ test('validation rejects malformed files, duplicate ids and impossible dates', (
     alwaysOnTop: false,
     autoStart: false,
     fontSize: 13,
-    theme: 'mint',
-    appearance: 'solid',
   });
   assert.equal(cleanSettings({ opacity: 0 }).opacity, 0.35);
 });
@@ -46,15 +44,17 @@ test('appearance preferences migrate old settings and clamp untrusted values', (
   assert.equal(cleanSettings({ fontSize: Infinity }).fontSize, 13);
   assert.equal(cleanSettings({ fontSize: 100 }).fontSize, 20);
   assert.equal(cleanSettings({ fontSize: 0 }).fontSize, 12);
-  assert.equal(cleanSettings({ theme: 'arbitrary', appearance: '<script>' }).theme, 'mint');
+  assert.equal(
+    Object.hasOwn(cleanSettings({ theme: 'lavender', appearance: 'solid' }), 'theme'),
+    false,
+  );
+  assert.equal(Object.hasOwn(cleanSettings({ appearance: 'solid' }), 'appearance'), false);
   assert.deepEqual(cleanSettings({ fontSize: 17, theme: 'lavender', appearance: 'glass' }), {
     language: 'zh',
     alwaysOnTop: false,
     autoStart: false,
     opacity: 1,
     fontSize: 17,
-    theme: 'lavender',
-    appearance: 'glass',
   });
 });
 test('atomic save in Chinese path, backup recovery and original preservation', async () => {
@@ -94,4 +94,10 @@ test('a previously configured missing file does not silently become a new empty 
   } finally {
     await fs.rm(dir, { recursive: true, force: true });
   }
+});
+
+test('new uncolored tasks and legacy colored backups are both accepted', () => {
+  const { color, ...neutral } = row;
+  assert.deepEqual(validateData({ version: 1, todos: [neutral] }).todos, [neutral]);
+  assert.equal(validateData({ version: 1, todos: [row] }).todos[0].color, 'mint');
 });

@@ -32,10 +32,9 @@ async function saveConfig() {
 function applySettings() {
   win.setAlwaysOnTop(config.alwaysOnTop);
   win.setOpacity(config.opacity);
-  const glass = config.appearance === 'glass';
-  win.setBackgroundColor(glass ? '#00000000' : '#faf9f6');
-  if (process.platform === 'win32') win.setBackgroundMaterial(glass ? 'acrylic' : 'none');
-  if (process.platform === 'darwin') win.setVibrancy(glass ? 'under-window' : null);
+  win.setBackgroundColor('#00000000');
+  if (process.platform === 'win32') win.setBackgroundMaterial('acrylic');
+  if (process.platform === 'darwin') win.setVibrancy('under-window');
 }
 async function snapshot() {
   config.autoStart = await startup.get();

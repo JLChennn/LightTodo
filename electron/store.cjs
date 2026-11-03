@@ -29,7 +29,7 @@ function validateData(data) {
       t.notes.length > 5000 ||
       !validDate(t.date) ||
       typeof t.done !== 'boolean' ||
-      !['mint', 'blue', 'peach', 'lavender'].includes(t.color) ||
+      (t.color !== undefined && !['mint', 'blue', 'peach', 'lavender'].includes(t.color)) ||
       typeof t.createdAt !== 'string' ||
       Number.isNaN(Date.parse(t.createdAt))
     )
@@ -42,7 +42,7 @@ function validateData(data) {
       notes: t.notes,
       date: t.date,
       done: t.done,
-      color: t.color,
+      ...(t.color !== undefined ? { color: t.color } : {}),
       createdAt: t.createdAt,
     };
   });
@@ -111,8 +111,6 @@ function cleanSettings(input = {}) {
       typeof input.fontSize === 'number' && Number.isFinite(input.fontSize)
         ? Math.round(Math.max(12, Math.min(20, input.fontSize)))
         : 13,
-    theme: ['mint', 'blue', 'peach', 'lavender'].includes(input.theme) ? input.theme : 'mint',
-    appearance: input.appearance === 'glass' ? 'glass' : 'solid',
     opacity:
       typeof input.opacity === 'number' && Number.isFinite(input.opacity)
         ? Math.max(0.35, Math.min(1, input.opacity))

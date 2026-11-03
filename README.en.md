@@ -2,7 +2,7 @@
 
 [简体中文](README.md) | **English**
 
-A minimal desktop todo list with pastel colors and local storage, for Windows and macOS.
+A minimal glass-inspired desktop todo list and notes app with local storage, for Windows and macOS.
 
 [Download installers](https://github.com/JLChennn/LightTodo/releases/latest) · [Report an issue](https://github.com/JLChennn/LightTodo/issues) · [Verification record (Chinese)](docs/VERIFICATION.md) · [MIT license](LICENSE)
 
@@ -10,17 +10,13 @@ A minimal desktop todo list with pastel colors and local storage, for Windows an
 
 The default compact window (360 × 460) opens at the top-left of the primary display:
 
-<img src="docs/images/compact-v1.3.png" width="360" alt="LightTodo default compact window" />
+<img src="docs/images/compact-v1.4.png" width="360" alt="LightTodo default compact window" />
 
 Expanded list, English interface, and preferences:
 
-<img src="docs/images/tasks-v1.3.png" width="360" alt="LightTodo expanded task list" /> <img src="docs/images/english-v1.3.png" width="360" alt="LightTodo English interface" /> <img src="docs/images/settings-v1.3.png" width="360" alt="Preferences: pinning, opacity, launch at login, and data folder" />
+<img src="docs/images/tasks-v1.4.png" width="360" alt="LightTodo expanded task list" /> <img src="docs/images/english-v1.4.png" width="360" alt="LightTodo English interface" /> <img src="docs/images/settings-v1.4.png" width="360" alt="Preferences: pinning, opacity, launch at login, and data folder" />
 
 Task titles are user content and are not translated when switching the interface language.
-
-Glass material example (Lavender):
-
-<img src="docs/images/v1.2-app-glass.png" width="360" alt="Lavender translucent glass material" />
 
 ## Get started without coding
 
@@ -29,7 +25,7 @@ You do not need Node.js, Python, developer tools, or a GitHub account to use the
 ### Install on Windows
 
 1. Open **Download installers** above and find **Assets** on the release page.
-2. Download the `.exe` file, such as `LightTodo-1.3.0-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
+2. Download the `.exe` file, such as `LightTodo-1.4.0-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
 3. Double-click the installer. On **Choose Install Location**, select **Browse** to choose another drive or folder, such as `D:\Apps\LightTodo`, then select **Install**. The setup wizard lets you choose the installation directory. Changing that directory does not move your personal task data.
 4. Open **LightTodo** using its desktop shortcut.
 
@@ -63,7 +59,7 @@ The installation directory and the data folder are separate. You do not need to 
 
 | What you want to do | How to do it |
 | --- | --- |
-| Add a task | Select **+ Add a task**, enter a title, optionally add notes, a planned date, and a card color, then select **Add to list** |
+| Add a task | Select **+ Add a task**, enter a title, optionally add notes, a planned date, then select **Add to list** |
 | Edit a task | Select its text, or hover over the card and select the pencil icon |
 | Complete a task | Select the checkbox; the task turns gray, receives a strikethrough, and moves below unfinished tasks |
 | Mark a task incomplete | Select its checked checkbox again |
@@ -76,8 +72,6 @@ The installation directory and the data folder are separate. You do not need to 
 | Move the window | Drag an empty area of the title bar near the LightTodo name |
 | Scroll | Use a mouse wheel, trackpad, or the scrollbar; the preferences dialog also scrolls |
 | Adjust font size | Preferences → Font size, 12–20 px; scales list and preferences text |
-| Change interface color | Preferences → Interface color: Mint, Blue, Peach, or Lavender; individual task colors remain independent |
-| Glass material | Preferences → Material → Glass; works with every interface color. Select Solid to restore an opaque background |
 | Adjust opacity | Open Preferences and drag **Window opacity**, from 35% to 100% |
 | Switch language | Open Preferences and select **EN** or **中文** |
 | Launch at login | Enable **Launch at login** in Preferences. It is off by default; disabling it removes the startup entry |
@@ -92,13 +86,13 @@ Existing shared tasks remain intact in Today; the other lists start empty. Expor
 
 The Notes tab supports titles, multiline text, search, editing, deletion and manual ordering, without completion checkboxes. Notes are included in local saves, exports and restores. The interface uses floating pill navigation, translucent materials and rounded cards inspired by iOS 26 Liquid Glass. This remains a Windows/macOS desktop app, not a native UIKit app.
 
-<img src="docs/images/notes-v1.3.png" width="360" alt="Notes interface" />
+<img src="docs/images/notes-v1.4.png" width="360" alt="Notes interface" />
 
 ### Pinning and glass material
 
 Pin the list to display above other applications; unpin to restore ordinary window behavior. Use the taskbar or Dock to switch to it. Pinning is remembered across restarts. Closing the app exits it; enable Launch at login to open it automatically when signing in.
 
-Glass uses native Vibrancy on macOS and Acrylic on Windows 11 22H2 or later. System version, Reduce Transparency accessibility settings, and remote desktop sessions can affect background blur. When native blur is unavailable, the app retains a translucent tinted glass background. Glass keeps text separate from the background transparency; Window opacity affects the entire window, so start with 100% when using Glass.
+The interface uses one neutral glass design. Interface colors, card colors and material switching have been removed. It uses native Vibrancy on macOS and Acrylic on Windows 11 22H2 or later. System version, Reduce Transparency accessibility settings, and remote desktop sessions can affect background blur. When native blur is unavailable, the app retains a translucent tinted glass background. Glass keeps text separate from the background transparency; Window opacity affects the entire window, so start with 100% when using Glass.
 
 ### About launch at login
 
@@ -210,7 +204,7 @@ For example:
 
 Start with the `git clone` command above, open the cloned `LightTodo` folder in your AI tool, and ask it to make the changes. Run `npm test` and `npm run test:e2e`, then package the app on the appropriate operating system. Export a task backup before changing the app. Use the UI screenshots in this README as a design reference.
 
-Possible DIY ideas include tags, priorities, reminders, recurring tasks, and theme colors. These are extension ideas, not features already included in the current version.
+Possible DIY ideas include tags, priorities, reminders, recurring tasks, and keyboard shortcuts. These are extension ideas, not features already included in the current version.
 
 ### Release workflow
 
