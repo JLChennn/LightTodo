@@ -83,10 +83,13 @@ async function loadData(file, initialize = true) {
       } catch (backupError) {
         if (backupError.code !== 'ENOENT') throw backupError;
       }
-      if (!initialize)
-        throw new Error(
+      if (!initialize) {
+        const missing = new Error(
           'Data file is missing. Check your folder or restore lighttodo.json from a backup. / 数据文件缺失，请检查原目录或从备份恢复 lighttodo.json。',
         );
+        missing.code = 'LIGHTTODO_DATA_MISSING';
+        throw missing;
+      }
       const data = { version: 1, todos: [] };
       await atomicWrite(file, data, false);
       return { data, recovered: false };
