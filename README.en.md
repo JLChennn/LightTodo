@@ -25,7 +25,7 @@ You do not need Node.js, Python, developer tools, or a GitHub account to use the
 ### Install on Windows
 
 1. Open **Download installers** above and find **Assets** on the release page.
-2. Download the `.exe` file, such as `LightTodo-1.4.1-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
+2. Download the `.exe` file, such as `LightTodo-1.4.2-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
 3. Double-click the installer. On **Choose Install Location**, select **Browse** to choose another drive or folder, such as `D:\Apps\LightTodo`, then select **Install**. The setup wizard lets you choose the installation directory. Changing that directory does not move your personal task data.
 4. Open **LightTodo** using its desktop shortcut.
 

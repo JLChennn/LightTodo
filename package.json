@@ -1,7 +1,7 @@
 {
   "name": "lighttodo",
   "productName": "LightTodo",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A minimal, local-first desktop todo list.",
   "author": "JLChennn",
   "license": "MIT",
