@@ -26,7 +26,7 @@ function validateData(data) {
       !t.title.trim() ||
       t.title.length > 200 ||
       typeof t.notes !== 'string' ||
-      t.notes.length > 5000 ||
+      t.notes.length > (t.list === 'memo' ? 6000 : 5000) ||
       !validDate(t.date) ||
       typeof t.done !== 'boolean' ||
       (t.color !== undefined && !['mint', 'blue', 'peach', 'lavender'].includes(t.color)) ||

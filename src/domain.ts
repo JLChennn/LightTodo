@@ -30,6 +30,20 @@ export interface Snapshot {
   version: string;
   startupSupported: boolean;
 }
+// Old notes had a separate title. Fold it into the body once, without losing text.
+export function memoText(task: Todo): string {
+  if (!task.notes.trim()) return task.title;
+  if (memoTitle(task.notes) === task.title) return task.notes;
+  return `${task.title}\n\n${task.notes}`;
+}
+export function memoTitle(body: string): string {
+  return body
+    .trim()
+    .split(/\r?\n/)[0]
+    .trim()
+    .slice(0, 200)
+    .replace(/[\uD800-\uDBFF]$/, '');
+}
 export function dateKey(d = new Date()): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }

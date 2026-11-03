@@ -10,11 +10,11 @@ A minimal glass-inspired desktop todo list and notes app with local storage, for
 
 The default compact window (360 × 460) opens at the top-left of the primary display:
 
-<img src="docs/images/compact-v1.4.png" width="360" alt="LightTodo default compact window" />
+<img src="docs/images/compact-v1.5.png" width="360" alt="LightTodo default compact window" />
 
 Expanded list, English interface, and preferences:
 
-<img src="docs/images/tasks-v1.4.png" width="360" alt="LightTodo expanded task list" /> <img src="docs/images/english-v1.4.png" width="360" alt="LightTodo English interface" /> <img src="docs/images/settings-v1.4.png" width="360" alt="Preferences: pinning, opacity, launch at login, and data folder" />
+<img src="docs/images/tasks-v1.5.png" width="360" alt="LightTodo expanded task list" /> <img src="docs/images/english-v1.5.png" width="360" alt="LightTodo English interface" /> <img src="docs/images/settings-v1.5.png" width="360" alt="Preferences: pinning, opacity, launch at login, and data folder" />
 
 Task titles are user content and are not translated when switching the interface language.
 
@@ -25,7 +25,7 @@ You do not need Node.js, Python, developer tools, or a GitHub account to use the
 ### Install on Windows
 
 1. Open **Download installers** above and find **Assets** on the release page.
-2. Download the `.exe` file, such as `LightTodo-1.4.2-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
+2. Download the `.exe` file, such as `LightTodo-1.5.0-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
 3. Double-click the installer. On **Choose Install Location**, select **Browse** to choose another drive or folder, such as `D:\Apps\LightTodo`, then select **Install**. The setup wizard lets you choose the installation directory. Changing that directory does not move your personal task data.
 4. Open **LightTodo** using its desktop shortcut.
 
@@ -48,6 +48,8 @@ macOS uses `.dmg`, not `.exe`. The Universal installer includes both Apple silic
 The app opens on **Today**, with Chinese as the default interface language. Select the gear icon at the top-right, then **EN**, to switch to English. Select **中文** to switch back.
 
 Each launch starts with a minimum-size window of approximately **360 × 460**, positioned 16 logical pixels from the top-left of the primary display's usable area. Windows display scaling can slightly affect the outer frame dimensions. You can move and resize the window after launch.
+
+All four window corners are rounded; Windows updates the native clipping region on resize. Typography prefers Bahnschrift / DIN Alternate for Latin and DengXian / PingFang SC for CJK, with system fallbacks.
 
 Window behavior matches version 1.1.0: LightTodo opens as an ordinary window. Select the pin icon to keep it above other windows; select it again to return to normal window behavior. Windows shows its taskbar button, and minimizing or using Show Desktop follows normal system behavior.
 
@@ -84,9 +86,9 @@ Today, Week, Month and Year are four independent lists rather than date filters.
 
 Existing shared tasks remain intact in Today; the other lists start empty. Export a backup before upgrading. Do not open the same data folder with an older version afterward: older versions cannot preserve list membership.
 
-The Notes tab supports titles, multiline text, search, editing, deletion and manual ordering, without completion checkboxes. Notes are included in local saves, exports and restores. The interface uses floating pill navigation, translucent materials and rounded cards inspired by iOS 26 Liquid Glass. This remains a Windows/macOS desktop app, not a native UIKit app.
+Notes use a single multiline body, without a title field, search or completion checkboxes. The first line supplies the internal summary. Editing, deletion and manual ordering remain available. Legacy titles are folded into the body without losing their text. Notes are included in local saves, exports and restores. The interface uses floating pill navigation, translucent materials and rounded cards inspired by iOS 26 Liquid Glass. This remains a Windows/macOS desktop app, not a native UIKit app.
 
-<img src="docs/images/notes-v1.4.png" width="360" alt="Notes interface" />
+<img src="docs/images/notes-v1.5.png" width="360" alt="Notes interface" />
 
 ### Pinning and glass material
 

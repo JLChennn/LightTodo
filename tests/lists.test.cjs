@@ -22,3 +22,12 @@ test('independent lists and memo bodies survive backup validation without leakin
     );
   assert.throws(() => validateData({ version: 1, todos: [{ ...todos[0], list: 'bad' }] }));
 });
+
+test('body-only notes derive summaries and preserve legacy titles when edited', async () => {
+  const { memoTitle, memoText } = await import('../src/domain.ts');
+  assert.equal(memoTitle('  \n旅行备忘\n护照'), '旅行备忘');
+  assert.equal(memoText({ title: '旧标题', notes: '原正文' }), '旧标题\n\n原正文');
+  assert.equal(memoText({ title: '新正文', notes: '新正文\n第二行' }), '新正文\n第二行');
+  assert.equal(memoText({ title: '仅标题', notes: '' }), '仅标题');
+  assert.ok(memoTitle('a'.repeat(300)).length <= 200);
+});

@@ -4,6 +4,7 @@ const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { atomicWrite, loadData, readData, validateData, cleanSettings } = require('./store.cjs');
 const { createStartup } = require('./startup.cjs');
+const { roundedShape } = require('./window-shape.cjs');
 
 if (process.env.LIGHTTODO_TEST_HOME)
   app.setPath('userData', path.resolve(process.env.LIGHTTODO_TEST_HOME));
@@ -191,6 +192,7 @@ async function createWindow() {
     minHeight: 460,
     show: false,
     frame: false,
+    roundedCorners: true,
     transparent: true,
     visualEffectState: 'active',
     resizable: true,
@@ -205,6 +207,11 @@ async function createWindow() {
       webSecurity: true,
     },
   });
+  if (process.platform === 'win32') {
+    const clipCorners = () => win.setShape(roundedShape(...win.getSize()));
+    clipCorners();
+    win.on('resize', clipCorners);
+  }
   Menu.setApplicationMenu(
     process.platform === 'darwin'
       ? Menu.buildFromTemplate([{ role: 'appMenu' }, { role: 'editMenu' }, { role: 'windowMenu' }])

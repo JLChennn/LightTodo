@@ -21,7 +21,7 @@ import {
   ChevronDown,
   Power,
 } from 'lucide-react';
-import { dateKey, selectTodos, reorderTodos } from './domain';
+import { dateKey, selectTodos, reorderTodos, memoText, memoTitle } from './domain';
 import type { Period, Settings, Snapshot, Todo } from './domain';
 import './styles.css';
 
@@ -285,17 +285,18 @@ function App() {
     setEditor({
       task,
       title: task?.title || '',
-      notes: task?.notes || '',
+      notes: task ? (activeList.current === 'memo' ? memoText(task) : task.notes) : '',
       date: task?.date || dateKey(),
     });
   }
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!editor || !editor.title.trim()) return;
+    if (!editor || !(activeList.current === 'memo' ? editor.notes.trim() : editor.title.trim()))
+      return;
     const task: Todo = {
       list: editor.task?.list || activeList.current,
       id: editor.task?.id || crypto.randomUUID(),
-      title: editor.title.trim(),
+      title: activeList.current === 'memo' ? memoTitle(editor.notes) : editor.title.trim(),
       notes: editor.notes.trim(),
       date: editor.date,
       done: editor.task?.done || false,
@@ -308,7 +309,7 @@ function App() {
     );
     setEditor(null);
   }
-  const visible = selectTodos(todos, period, query, now),
+  const visible = selectTodos(todos, period, period === 'memo' ? '' : query, now),
     pending = visible.filter((x) => !x.done),
     done = visible.filter((x) => x.done);
   const dateLabel = new Intl.DateTimeFormat(zh ? 'zh-CN' : 'en-US', {
@@ -390,11 +391,13 @@ function App() {
           onClick={() => openEditor(task)}
           aria-label={`${t.edit}: ${task.title}`}
         >
-          <span className="task-title">{task.title}</span>
-          {task.notes && (
-            <span className={`task-notes ${period === 'memo' ? 'memo-body' : ''}`}>
-              {task.notes}
-            </span>
+          {period === 'memo' ? (
+            <span className="task-notes memo-body">{memoText(task)}</span>
+          ) : (
+            <>
+              <span className="task-title">{task.title}</span>
+              {task.notes && <span className="task-notes">{task.notes}</span>}
+            </>
           )}
           <span
             className={`task-date ${period === 'memo' ? 'memo-date' : ''} ${!task.done && task.date < dateKey(now) ? 'overdue-date' : ''}`}
@@ -544,24 +547,26 @@ function App() {
             <span>{period === 'memo' ? visible.length : `${done.length} / ${visible.length}`}</span>
           </div>
           <div className="list-toolbar">
-            <label className="search">
-              <Search size={15} />
-              <input
-                aria-label={t.search}
-                placeholder={t.search}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              {query && (
-                <button
-                  className="icon-button"
-                  aria-label={zh ? '清空搜索' : 'Clear search'}
-                  onClick={() => setQuery('')}
-                >
-                  <X size={13} />
-                </button>
-              )}
-            </label>
+            {period !== 'memo' && (
+              <label className="search">
+                <Search size={15} />
+                <input
+                  aria-label={t.search}
+                  placeholder={t.search}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+                {query && (
+                  <button
+                    className="icon-button"
+                    aria-label={zh ? '清空搜索' : 'Clear search'}
+                    onClick={() => setQuery('')}
+                  >
+                    <X size={13} />
+                  </button>
+                )}
+              </label>
+            )}
             <button className="add-button" onClick={() => openEditor()}>
               <Plus size={16} />
               <span>{period === 'memo' ? (zh ? '新建便签' : 'New note') : t.add}</span>
@@ -604,21 +609,25 @@ function App() {
           closeLabel={t.close}
         >
           <form onSubmit={submit}>
-            <input
-              className="title-input"
-              aria-label={period === 'memo' ? (zh ? '便签标题' : 'Note title') : t.taskTitle}
-              autoFocus
-              placeholder={period === 'memo' ? (zh ? '便签标题' : 'Note title') : t.taskTitle}
-              value={editor.title}
-              maxLength={200}
-              required
-              onChange={(e) => setEditor({ ...editor, title: e.target.value })}
-            />
+            {period !== 'memo' && (
+              <input
+                className="title-input"
+                aria-label={t.taskTitle}
+                autoFocus
+                placeholder={t.taskTitle}
+                value={editor.title}
+                maxLength={200}
+                required
+                onChange={(e) => setEditor({ ...editor, title: e.target.value })}
+              />
+            )}
             <textarea
+              autoFocus={period === 'memo'}
+              required={period === 'memo'}
               aria-label={period === 'memo' ? (zh ? '便签正文' : 'Note body') : t.notes}
               placeholder={period === 'memo' ? (zh ? '写点什么…' : 'Write something…') : t.notes}
               value={editor.notes}
-              maxLength={5000}
+              maxLength={period === 'memo' ? 6000 : 5000}
               rows={4}
               onChange={(e) => setEditor({ ...editor, notes: e.target.value })}
             />
@@ -638,7 +647,11 @@ function App() {
               <button type="button" className="secondary" onClick={() => setEditor(null)}>
                 {t.cancel}
               </button>
-              <button className="primary" type="submit" disabled={!editor.title.trim()}>
+              <button
+                className="primary"
+                type="submit"
+                disabled={!(period === 'memo' ? editor.notes.trim() : editor.title.trim())}
+              >
                 {editor.task ? t.save : t.create}
                 <Check size={14} />
               </button>

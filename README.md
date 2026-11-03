@@ -10,11 +10,11 @@
 
 默认紧凑界面（360 × 460，主屏幕左上角）：
 
-<img src="docs/images/compact-v1.4.png" width="360" alt="LightTodo 默认紧凑界面" />
+<img src="docs/images/compact-v1.5.png" width="360" alt="LightTodo 默认紧凑界面" />
 
 展开后的清单与设置面板：
 
-<img src="docs/images/tasks-v1.4.png" width="360" alt="LightTodo 清单" /> <img src="docs/images/settings-v1.4.png" width="360" alt="LightTodo 设置：字号、置顶、透明度与本地数据" />
+<img src="docs/images/tasks-v1.5.png" width="360" alt="LightTodo 清单" /> <img src="docs/images/settings-v1.5.png" width="360" alt="LightTodo 设置：字号、置顶、透明度与本地数据" />
 
 ## 我只想使用，不会编程
 
@@ -23,7 +23,7 @@
 ### Windows 安装
 
 1. 打开上面的「下载安装包」链接，找到版本页面的 **Assets（资源）**。
-2. 下载以 `.exe` 结尾的文件，例如 `LightTodo-1.4.2-win-x64.exe`。不要下载 `Source code`，那是给开发者看的源码。
+2. 下载以 `.exe` 结尾的文件，例如 `LightTodo-1.5.0-win-x64.exe`。不要下载 `Source code`，那是给开发者看的源码。
 3. 双击安装包，在「选择安装位置」页面点「浏览」，可以选择其他磁盘或文件夹（例如 `D:\Apps\LightTodo`），再点「安装」。安装采用向导模式，不会跳过路径选择。更改安装目录不会移动个人清单数据。
 4. 双击桌面上的 **LightTodo** 图标，就可以开始使用。
 
@@ -44,6 +44,8 @@ macOS 使用 `.dmg`，不使用 `.exe`。提供 Universal 安装包，同时包�
 ## 第一次打开
 
 默认打开「今日」，界面语言为中文。每次启动以约 **360 × 460** 的最小窗口放在主屏幕可用区域左上角（距边缘 16 个逻辑像素）。Windows 显示缩放可能使外框有少量取整差异，启动后仍可自由缩放和移动。
+
+窗口四角统一圆角，Windows 在缩放时同步更新原生裁切。字体优先使用 Bahnschrift / DIN Alternate 西文字体和等线 / 苹方中文字体，按系统可用字体回退。
 
 窗口行为与 1.1.0 一致：默认作为普通窗口显示，点右上角图钉后置顶于其他窗口前方，再点一次取消置顶。Windows 下正常显示任务栏按钮，最小化或使用「显示桌面」时遵循系统窗口行为。
 
@@ -80,9 +82,9 @@ macOS 使用 `.dmg`，不使用 `.exe`。提供 Universal 安装包，同时包�
 
 升级前的共用任务完整保留在「今日」，其余三个清单从空白开始。请先导出备份；使用新版后不要直接用旧版打开同一数据目录，旧版无法保留新的清单归属。
 
-顶部「便签」可创建标题和多行正文，支持搜索、编辑、删除及排序，不显示完成复选框。便签与全部清单一起自动保存、导出和恢复。界面采用受 iOS 26 Liquid Glass 启发的浮动胶囊导航、半透明材质和圆角卡片；这是 Windows/macOS 桌面应用，不是 UIKit 原生应用。
+顶部「便签」直接输入多行正文即可保存，不需要填写标题，也不提供搜索。列表自动取首行作为操作摘要，支持编辑、删除及排序，不显示完成复选框。旧便签的独立标题会合并到正文，保留原文。便签与全部清单一起自动保存、导出和恢复。界面采用受 iOS 26 Liquid Glass 启发的浮动胶囊导航、半透明材质和圆角卡片；这是 Windows/macOS 桌面应用，不是 UIKit 原生应用。
 
-<img src="docs/images/notes-v1.4.png" width="360" alt="便签界面" />
+<img src="docs/images/notes-v1.5.png" width="360" alt="便签界面" />
 
 ### 关于置顶与玻璃效果
 

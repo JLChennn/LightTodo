@@ -1,5 +1,5 @@
 :root {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  font-family: 'Bahnschrift', 'DIN Alternate', 'DengXian', 'PingFang SC', 'Segoe UI', sans-serif;
   font-size: 13px;
   color: #24262b;
   background: transparent;
@@ -903,4 +903,43 @@ svg {
   box-shadow:
     0 0 0 3px #a8b4c52a,
     0 2px 5px #34415a20;
+}
+
+/* Geometric system typography: DIN-like Latin, slender CJK, restrained tracking. */
+:root {
+  font-weight: 400;
+  letter-spacing: 0.025em;
+  color: #222b39;
+}
+.brand {
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.task-title {
+  font-weight: 400;
+  letter-spacing: 0.045em;
+  color: #253043;
+}
+.modal-heading h2 {
+  font-weight: 500;
+  letter-spacing: 0.045em;
+}
+.period-nav button {
+  font-weight: 400;
+  letter-spacing: 0.035em;
+}
+.memo-body {
+  font-weight: 400;
+  letter-spacing: 0.045em;
+  color: #45536a;
+}
+.memo-body::first-line {
+  color: #253043;
+}
+[data-list='memo'] .list-toolbar {
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+[data-list='memo'] .modal textarea {
+  min-height: 220px;
 }

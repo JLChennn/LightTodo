@@ -43,6 +43,7 @@ test('ordinary window pinning, appearance controls, large text and restart persi
     ).toBe(false);
     if (process.platform === 'win32')
       expect(await nativeWindow()).toEqual({
+        rounded: true,
         parent: '0',
         child: false,
         toolWindow: false,
@@ -77,11 +78,18 @@ test('ordinary window pinning, appearance controls, large text and restart persi
       .toBe(false);
     if (process.platform === 'win32')
       expect(await nativeWindow()).toEqual({
+        rounded: true,
         parent: '0',
         child: false,
         toolWindow: false,
         topmost: false,
       });
+    if (process.platform === 'win32') {
+      await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(480, 600));
+      expect((await nativeWindow()).rounded).toBe(true);
+      await app.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].setSize(360, 460));
+      expect((await nativeWindow()).rounded).toBe(true);
+    }
     await page.keyboard.press('Escape');
     await page.getByRole('button', { name: 'Minimize', exact: true }).click();
     await expect
