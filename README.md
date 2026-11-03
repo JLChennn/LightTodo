@@ -10,11 +10,11 @@
 
 默认紧凑界面（360 × 460，主屏幕左上角）：
 
-<img src="docs/images/v1.2-app-compact.png" width="360" alt="LightTodo 默认紧凑界面" />
+<img src="docs/images/compact-v1.3.png" width="360" alt="LightTodo 默认紧凑界面" />
 
 展开后的清单与设置面板：
 
-<img src="docs/images/v1.2-app-zh.png" width="360" alt="LightTodo 清单" /> <img src="docs/images/v1.2-settings.png" width="360" alt="LightTodo 设置：置顶、透明度、自启动和数据目录" />
+<img src="docs/images/tasks-v1.3.png" width="360" alt="LightTodo 清单" /> <img src="docs/images/settings-v1.3.png" width="360" alt="LightTodo 设置：置顶、透明度、自启动和数据目录" />
 
 玻璃材质示例（淡紫）：
 
@@ -187,7 +187,7 @@ npm run dist:mac     # 在 macOS 构建 Universal dmg
 
 ```text
 electron/       桌面窗口、受限 IPC、本地文件存储
-src/            React 界面、语言文案、日期筛选
+src/            React 界面、语言文案、独立清单与便签
 tests/          逻辑测试及真实 Electron 交互测试
 build/          应用图标
 docs/           实际界面截图、验证记录

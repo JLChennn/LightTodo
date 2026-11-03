@@ -10,11 +10,11 @@ A minimal desktop todo list with pastel colors and local storage, for Windows an
 
 The default compact window (360 × 460) opens at the top-left of the primary display:
 
-<img src="docs/images/v1.2-app-compact.png" width="360" alt="LightTodo default compact window" />
+<img src="docs/images/compact-v1.3.png" width="360" alt="LightTodo default compact window" />
 
 Expanded list, English interface, and preferences:
 
-<img src="docs/images/v1.2-app-zh.png" width="360" alt="LightTodo expanded task list" /> <img src="docs/images/v1.2-app-en.png" width="360" alt="LightTodo English interface" /> <img src="docs/images/v1.2-settings.png" width="360" alt="Preferences: pinning, opacity, launch at login, and data folder" />
+<img src="docs/images/tasks-v1.3.png" width="360" alt="LightTodo expanded task list" /> <img src="docs/images/english-v1.3.png" width="360" alt="LightTodo English interface" /> <img src="docs/images/settings-v1.3.png" width="360" alt="Preferences: pinning, opacity, launch at login, and data folder" />
 
 Task titles are user content and are not translated when switching the interface language.
 
@@ -151,7 +151,7 @@ Changes save automatically. Wait for **Saved on this device** before shutting do
 
 **Will closing the app lose my list?** Saved tasks remain after restart. The top-right × quits the app rather than minimizing it to a tray. Use − to minimize it.
 
-**Why is a task completed yesterday missing from Today?** It remains under its planned date. Use **Week / Month / Year** to find it when that range includes the date.
+**Do tasks move between lists automatically?** No. Each task stays in the list where it was created.
 
 **Why did my list change after switching folders?** The destination already contained another list. Switch back to the original folder to see your previous list.
 
