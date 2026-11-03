@@ -5,6 +5,7 @@ const { pathToFileURL } = require('node:url');
 const { atomicWrite, loadData, readData, validateData, cleanSettings } = require('./store.cjs');
 const { createStartup } = require('./startup.cjs');
 const { roundedShape } = require('./window-shape.cjs');
+const { recoverMissingData } = require('./startup-recovery.cjs');
 
 if (process.env.LIGHTTODO_TEST_HOME)
   app.setPath('userData', path.resolve(process.env.LIGHTTODO_TEST_HOME));
@@ -283,7 +284,24 @@ if (single) {
       if (process.platform === 'win32') app.setAppUserModelId('io.github.jlchennn.lighttodo');
       startup = createStartup({ app, homeDir: app.getPath('home') });
       config.autoStart = await startup.get();
-      const loaded = await loadData(dataFile(), !saved.dataDir);
+      let loaded;
+      try {
+        loaded = await loadData(dataFile(), !saved.dataDir);
+      } catch (error) {
+        if (error.code !== 'LIGHTTODO_DATA_MISSING') throw error;
+        const restored = await recoverMissingData({
+          dialog,
+          userData: app.getPath('userData'),
+          missingFile: dataFile(),
+          language: config.language,
+        });
+        if (!restored) {
+          app.quit();
+          return;
+        }
+        config.dataDir = restored.dataDir;
+        loaded = restored.loaded;
+      }
       data = loaded.data;
       recovered = loaded.recovered;
       await saveConfig();

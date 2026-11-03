@@ -25,7 +25,7 @@ You do not need Node.js, Python, developer tools, or a GitHub account to use the
 ### Install on Windows
 
 1. Open **Download installers** above and find **Assets** on the release page.
-2. Download the `.exe` file, such as `LightTodo-1.5.0-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
+2. Download the `.exe` file, such as `LightTodo-1.5.1-win-x64.exe`. Do not download **Source code** unless you want to develop the app.
 3. Double-click the installer. On **Choose Install Location**, select **Browse** to choose another drive or folder, such as `D:\Apps\LightTodo`, then select **Install**. The setup wizard lets you choose the installation directory. Changing that directory does not move your personal task data.
 4. Open **LightTodo** using its desktop shortcut.
 
@@ -142,6 +142,10 @@ Changes save automatically. Wait for **Saved on this device** before shutting do
 - **Update:** export a backup, quit LightTodo, and install the new version. There is no automatic updater.
 - **Uninstall:** on Windows, use **Settings → Apps**; on Mac, move the app to the Trash. The app does not intentionally delete your task data during uninstall.
 - **Remove data completely:** export anything you need, note the data folder shown in Preferences, quit the app, and manage those files yourself. A custom data folder is not automatically removed during uninstall.
+
+### Missing data at startup
+
+The recovery dialog shows the missing path. Select **Find list or backup** and choose your `lighttodo.json` or `.bak` file. Valid data is copied into a new recovery folder; the original remains intact and the new location is remembered. You can quit to investigate. A new empty list is created only after explicitly selecting **Start a separate empty list**; the original folder is never overwritten.
 
 ## Frequently asked questions
 
